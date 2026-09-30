@@ -33,4 +33,4 @@ Stato: **Deciso** (fondatore, 2026-09-30).
 
 ## Ordine dei lavori
 
-1. Librerie organizzate. 2. Gestore moduli con marketplace e registry. 3. Modulo Canti (stile OpenLP). 4. Installatori, aggiornamenti, ID di installazione, sezione Licenza. 5. Resto della Fase 0: sfondi, test lingue, postazioni in rete.
+1. Librerie organizzate. 2. Gestore moduli con marketplace e registry. 3. Modulo Canti. 4. Installatori, aggiornamenti, ID di installazione, sezione Licenza. 5. Resto della Fase 0: sfondi, test lingue, postazioni in rete.

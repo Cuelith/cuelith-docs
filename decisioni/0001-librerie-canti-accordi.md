@@ -4,7 +4,7 @@ Stato: **Deciso** (fondatore, 2026-09-30). Completa i capitoli 04, 12, 22 e 30 d
 
 ## Richiesta del fondatore
 
-- Scrivere canti divisi in sezioni (intro, strofa, pre-ritornello, ritornello, bridge, finale…), ognuna numerata, e proiettarle nell'ordine che si vuole, come in OpenLP.
+- Scrivere canti divisi in sezioni (intro, strofa, pre-ritornello, ritornello, bridge, finale…), ognuna numerata, e proiettarle nell'ordine che si vuole.
 - Un modulo dedicato ai canti e uno complementare per testi + accordi per i musicisti.
 - Non una libreria sola: **quante librerie si vuole**, come playlist. Una libreria può contenere **più copie dello stesso brano** (autore, arrangiamento diversi) e **tag**.
 - Una **pagina per il copyright** e la possibilità di **allegare una base musicale** (mp3 e simili).
@@ -36,9 +36,9 @@ Una scheda **Crediti** per ogni elemento: titolo e titoli alternativi, autori co
 Separato dalla modalità Culto perché serve anche a concerti ed eventi. Culto dipende da Canti.
 
 - Sezioni tipizzate e numerate, ognuna con un colore: Intro, Strofa 1…n, Pre-ritornello, Ritornello, Bridge, Strumentale, Tag, Finale (`slide.group`).
-- **Ordine di proiezione** (`item.arrangement`) trascinando le sezioni o scrivendolo in breve come in OpenLP (`v1 c1 v2 c1 b1 c1`); ripetizioni libere.
+- **Ordine di proiezione** (`item.arrangement`) trascinando le sezioni o scrivendolo in breve (`v1 c1 v2 c1 b1 c1`); ripetizioni libere.
 - In onda: tasti per saltare a una sezione (es. C = ritornello, B = bridge).
-- Importazione da OpenLP (OpenLyrics), ChordPro, testo semplice.
+- Importazione da OpenLyrics, ChordPro, testo semplice.
 - Pagina copyright con i campi dei canti; base musicale sincronizzabile.
 
 ### 5. Modulo Accordi (`plugin-chords`, estende Canti)
