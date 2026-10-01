@@ -114,3 +114,22 @@ Stato del codice:
 
    Mai codice dei moduli dentro le finestre di uscita.
 4. **Look dei moduli** (`lookTemplates`): restano **dichiarativi** (campi, disposizione, stile), disegnati dal renderer del nucleo. Per la stessa regola, un modello di look non può essere codice.
+
+## Contatore delle risorse (protocollo 1.9, 2026-10-01)
+
+- **Cosa misura.** Quanto usano piattaforma e moduli attivi rispetto al computer.
+  - Il motore misura ogni 10 s: processo principale, scheda video, postazione, ogni uscita, "altro" (pannelli e servizi), dalle metriche di Electron. Misurare costa pochissimo.
+  - I moduli mandano il loro consumo (memoria, CPU) nella risposta a `plugin.ping`. L'SDK lo fa da solo.
+- **Minimo, attuale, massimo.**
+  - Ogni modulo può dichiarare nel manifest `resources` (memoria e CPU a riposo e al massimo).
+  - Cuelith ricorda i minimi e i massimi osservati davvero; i massimi restano tra un avvio e l'altro (`resources.json` nella cartella dati).
+  - Il "massimo" usa il più alto tra dichiarato e osservato.
+- **Semaforo** (`summarizeResources`):
+  - **giallo**: il massimo stimato supera il 70% della memoria, la CPU adesso supera il 70%, oppure resta poca memoria libera;
+  - **rosso**: il massimo stimato supera il 90% della memoria, oppure un'uscita perde fotogrammi (pause oltre 50 ms).
+- **Interfaccia.**
+  - Indicatore colorato nella barra in alto.
+  - Impostazioni → Risorse: barre per memoria e processore (a riposo, adesso, al massimo, su quanto ha il PC), fotogrammi al secondo di ogni uscita, tabella per parte.
+- **Misure di riferimento** (PC del fondatore, Ryzen 7 5700U, 16 GB):
+  - Cuelith con una slide in onda su un'uscita: **circa 600 MB** di memoria e **meno dell'1%** del processore, uscita a 60 fotogrammi al secondo senza ritardi;
+  - un modulo Node a riposo (Ciao): **circa 43 MB**.
