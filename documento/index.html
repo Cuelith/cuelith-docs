@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documento di progetto di Cuelith</title>
+<meta name="description" content="Documento di progetto e specifica tecnica di Cuelith, software di proiezione live con nucleo leggero e moduli installabili. Fonte di verità per lo sviluppo.">
+<style>
+/* Layout: regia scura — indice fisso a sinistra, colonna di lettura a destra, schemi a tutta larghezza della colonna */
+:root{
+  --bg:#0B0C0E; --bg-2:#121417; --bg-3:#181B1F; --line:#262A31; --line-2:#333840;
+  --fg:#ECEAE4; --muted:#A9ADB4; --faint:#7C818A;
+  --live:#FF5B3A; --live-bg:#2A1712; --live-soft:#FF8A6E;
+  --cue:#37D1BF; --cue-bg:#10201E; --cue-soft:#BFD8D5;
+  --stage:#F2B441; --stage-bg:#241E0E;
+  --mod:#C9BFFF; --mod-bg:#16142A; --mod-chip:#26224A; --mod-line:#4A4470;
+  --blue:#8FB8FF; --blue-bg:#121B2A; --pink:#E8A0C8;
+  --display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --body:'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:20px}
+a{color:var(--cue)}
+:focus-visible{outline:2px solid var(--cue);outline-offset:3px;border-radius:4px}
+code{font-family:var(--mono);font-size:.88em;background:var(--bg-3);padding:1px 6px;border-radius:5px}
+.shell{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:60px}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-block:40px;display:flex;flex-direction:column;gap:1px;max-height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.mark{width:28px;height:28px;border:1.5px solid var(--cue);border-radius:8px;display:grid;place-items:center}
+.mark i{width:10px;height:10px;border-radius:50%;background:var(--live)}
+.brand b{letter-spacing:.2em;font-size:13px}
+nav.toc .part{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding:14px 10px 4px}
+nav.toc a{display:flex;gap:10px;align-items:baseline;padding:4px 10px;border-radius:7px;color:var(--muted);text-decoration:none;font-size:14px}
+nav.toc a span{font-family:var(--mono);font-size:11px;color:var(--faint);width:18px;flex-shrink:0}
+nav.toc a:hover{color:var(--fg);background:var(--bg-2)}
+nav.toc a.on{color:var(--fg);background:var(--bg-3)}
+nav.toc a.on span{color:var(--live)}
+main{min-width:0;padding-block:48px 96px;display:flex;flex-direction:column;gap:104px}
+section{display:flex;flex-direction:column;gap:26px;min-width:0}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cue);font-weight:600}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(64px,11vw,140px);line-height:.95;letter-spacing:-.02em}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.2vw,46px);line-height:1.1}
+h3{font-size:20px;font-weight:600;line-height:1.3}
+h4{font-size:16px;font-weight:600}
+p{margin:0;max-width:68ch}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:68ch}
+.lead{font-size:clamp(19px,2vw,22px);color:var(--muted);line-height:1.5}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.head{display:flex;flex-direction:column;gap:12px}
+.partHead{padding:36px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.partHead span{font-family:var(--mono);font-size:13px;color:var(--live)}
+.partHead strong{font-family:var(--display);font-size:clamp(26px,3.4vw,36px);font-weight:600}
+.decision{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:5px;background:var(--stage-bg);color:var(--stage);border:1px solid #5A4618}
+.fixed{background:var(--cue-bg);color:var(--cue);border-color:#1E4A45}
+
+/* hero */
+.hero{gap:34px;padding-top:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-size:14px;padding:6px 14px;border:1px solid var(--line-2);border-radius:20px;color:var(--fg)}
+.pill.on{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
+.monitor{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.screen{aspect-ratio:16/9;max-width:100%;border-radius:8px;display:grid;place-items:center;padding:16px;text-align:center;font-family:var(--display);position:relative;overflow:hidden}
+.screen.pgm{background:#17120E;border:2px solid var(--live);font-size:clamp(16px,2.4vw,28px);line-height:1.35}
+.screen.pvw{background:#050607;border:2px solid var(--cue);font-size:clamp(12px,1.4vw,16px)}
+.tag{position:absolute;top:10px;left:10px;font:700 10px var(--mono);letter-spacing:.1em;padding:3px 7px;border-radius:4px}
+.tag.l{background:var(--live);color:#1A0703}.tag.c{background:var(--cue);color:#06201D}
+.sun{position:absolute;width:55%;aspect-ratio:1;border-radius:50%;background:#2A1C12;left:-12%;top:-30%}
+.readme{padding:18px 22px;border-radius:14px;border:1px solid var(--line-2);background:var(--bg-2);display:flex;flex-direction:column;gap:8px}
+.readme p{font-size:15px;color:var(--muted)}
+
+/* problem */
+.flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,.8fr);gap:24px;align-items:center}
+.stack{display:flex;flex-direction:column;gap:8px;min-width:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 18px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line)}
+.row b{font-weight:600}
+.row small{color:var(--muted);font-size:14px;text-align:right}
+.arrow{width:56px;height:2px;background:var(--live);position:relative;flex-shrink:0}
+.arrow::after{content:"";position:absolute;right:-2px;top:-6px;border-left:12px solid var(--live);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.one{padding:28px;border-radius:18px;background:var(--cue-bg);border:2px solid var(--cue);display:flex;flex-direction:column;gap:10px}
+.one strong{font-family:var(--display);font-size:40px;line-height:1.05}
+.one p{color:var(--cue-soft)}
+
+/* tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+td code{white-space:nowrap}
+.src{font-size:13px;color:var(--faint)}
+
+/* statement */
+.statement{padding:56px 48px;border-radius:24px;background:var(--bg-2);border:1px solid var(--line)}
+.statement p.big{font-family:var(--display);font-weight:600;font-size:clamp(40px,6.5vw,84px);line-height:1.02;letter-spacing:-.01em;max-width:none}
+.statement p.big em{font-style:normal;color:var(--live)}
+
+/* core vs modules */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+.box{padding:24px;border-radius:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.box.core{background:var(--cue-bg);border:1.5px solid var(--cue)}
+.box.core h3{color:var(--cue)}
+.box.core ul{margin:0;padding-left:20px;color:var(--cue-soft);display:flex;flex-direction:column;gap:4px}
+.box.mods{background:var(--mod-bg);border:1.5px solid var(--mod-line)}
+.box.mods h3{color:var(--mod)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;padding:4px 11px;border-radius:14px;background:var(--mod-chip);color:#E4DEFF}
+
+/* demo */
+.demo{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;padding:20px;border-radius:18px;background:var(--bg-2);border:1px solid var(--line)}
+.toggles{display:flex;flex-direction:column;gap:6px}
+.toggles .t{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--bg-3);font-size:14px;cursor:pointer}
+.sw{appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line-2);position:relative;cursor:pointer;flex-shrink:0;margin:0;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:left .15s}
+.sw:checked{background:var(--cue)}
+.sw:checked::after{left:19px;background:#06201D}
+.mini{border-radius:12px;background:var(--bg);border:1px solid var(--line-2);display:flex;flex-direction:column;overflow:hidden;min-height:300px}
+.mini .bar{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px;flex-wrap:wrap}
+.mini .bar b{letter-spacing:.18em;font-size:11px;margin-right:6px}
+.mtab{padding:2px 9px;border-radius:5px;border:1px solid var(--line-2);color:var(--muted)}
+.mtab.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.mini .body{flex:1;display:grid;grid-template-columns:40px 1fr 1.6fr 1.3fr;min-height:0}
+.dock{border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0}
+.dock i{width:24px;height:24px;border-radius:6px;background:var(--mod-chip);display:grid;place-items:center;font:600 9px var(--mono);font-style:normal;color:var(--mod)}
+.dock i.plus{background:none;border:1px dashed var(--faint);color:var(--muted)}
+.col{padding:10px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--line);min-width:0}
+.col:last-child{border-right:0}
+.col .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ln{height:14px;border-radius:4px;background:var(--bg-3)}
+.ln.live{background:var(--live-bg)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tiles div{aspect-ratio:16/9;border-radius:4px;background:#050607;border:1px solid var(--line)}
+.tiles div.l{border-color:var(--live)}.tiles div.c{border-color:var(--cue)}
+.p-pgm{aspect-ratio:16/9;border-radius:5px;background:#17120E;border:1.5px solid var(--live)}
+.p-pvw{aspect-ratio:16/9;width:55%;border-radius:5px;background:#050607;border:1.5px solid var(--cue)}
+.panel{border-radius:6px;padding:7px 8px;font-size:11px;background:var(--mod-bg);border:1px solid var(--mod-line);color:var(--mod)}
+.count{font-family:var(--mono);font-size:13px;color:var(--muted)}
+
+/* profiles chart */
+.bars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:end}
+.bcol{display:flex;flex-direction:column;gap:4px;min-width:0}
+.blk{font-size:13px;padding:8px 10px;border-radius:7px;background:var(--mod-chip);color:#E4DEFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk.core{background:var(--cue);color:#06201D;font-weight:600}
+.bname{margin-top:10px;font-weight:600}
+.bn{font-size:13px;color:var(--muted)}
+
+/* concepts */
+.concepts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.cpt{padding:20px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.cpt .q{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.cpt p{font-size:15px;color:var(--muted)}
+.pipe{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center}
+.pcol{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pcol .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.node{padding:10px 14px;border-radius:10px;background:var(--bg-3);border:1px solid var(--line-2);font-size:14px}
+.node small{display:block;color:var(--muted);font-size:12px}
+.node.t{background:var(--cue-bg);border-color:var(--cue)}
+.node.o{background:var(--live-bg);border-color:#6A2A1C}
+
+/* architecture */
+.arch{display:grid;grid-template-columns:minmax(0,1.4fr) auto minmax(0,1fr);gap:20px;align-items:center}
+.layer{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:18px 20px;border-radius:12px;flex-wrap:wrap}
+.layer small{font-size:14px}
+.L1{background:var(--bg-3)} .L1 small{color:var(--muted)}
+.L2{background:var(--mod-bg);border:2px solid var(--mod)} .L2 b{color:var(--mod)} .L2 small{color:#D6D0EE}
+.L3{background:var(--cue-bg);border:2px solid var(--cue)} .L3 b{color:var(--cue)} .L3 small{color:var(--cue-soft)}
+.L4{background:var(--bg);border:1px solid var(--line-2)} .L4 small{color:var(--muted)}
+.via{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--mod);font-size:13px;text-align:center}
+.via .arrow{background:var(--mod);transform:rotate(180deg)}
+.via .arrow::after{border-left-color:var(--mod)}
+.plug{padding:14px 16px;border-radius:12px;border:1.5px dashed var(--mod-line)}
+.plug small{display:block;color:var(--muted);font-size:14px}
+.note{padding:14px 18px;border-radius:12px;background:var(--stage-bg);color:var(--stage);font-weight:500}
+
+/* team */
+.team{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;align-items:center}
+.engine{padding:26px;border-radius:18px;background:var(--cue-bg);border:2px solid var(--cue);display:flex;flex-direction:column;gap:10px}
+.engine h3{color:var(--cue)}
+.engine p{color:var(--cue-soft);font-size:15px}
+.seats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.seat{padding:16px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.seat small{color:var(--muted);font-size:13px}
+.seat .role{font-family:var(--mono);font-size:11px;color:var(--stage)}
+
+/* families */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fam{padding:22px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.fam p{color:var(--muted);font-size:15px}
+.fam .ex{font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* repo */
+.repo{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+.tree{padding:22px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);font-family:var(--mono);font-size:14px;overflow-x:auto}
+.tree .r{display:grid;grid-template-columns:minmax(190px,auto) 1fr;gap:16px;padding:4px 0}
+.tree .r span:last-child{font-family:var(--body);color:var(--muted)}
+.tree .base{color:var(--cue)}.tree .plg{color:var(--mod)}
+.tree .org{color:var(--faint);padding-bottom:8px}
+.rules{display:flex;flex-direction:column;gap:10px}
+.rule{padding:18px;border-radius:12px}
+.rule p{font-size:15px}
+.r1{background:var(--cue-bg)} .r1 h3{color:var(--cue)} .r1 p{color:var(--cue-soft)}
+.r2{background:var(--mod-bg)} .r2 h3{color:var(--mod)} .r2 p{color:#D6D0EE}
+.r3{background:var(--stage-bg)} .r3 h3{color:var(--stage)} .r3 p{color:#EBDDB8}
+
+/* code */
+.code{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+pre{margin:0;padding:20px 22px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);font-family:var(--mono);font-size:13.5px;line-height:1.65;overflow-x:auto;color:var(--fg);min-width:0}
+.k1{color:var(--blue)}.k2{color:var(--stage)}.k3{color:var(--cue)}.k4{color:var(--live-soft)}.k5{color:var(--mod)}.cm{color:var(--faint)}
+dl{margin:0;display:flex;flex-direction:column;gap:14px}
+dt{font-family:var(--mono);font-weight:600}
+dd{margin:4px 0 0;color:var(--muted);font-size:15px}
+.gloss{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 28px}
+.gloss div{padding:12px 0;border-bottom:1px solid var(--line)}
+.gloss dt{color:var(--cue)}
+.gloss dt span{color:var(--faint);font-weight:400;font-family:var(--body);font-size:13px;margin-left:6px}
+
+/* steps */
+ol.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:s}
+ol.steps li{counter-increment:s;padding:22px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font:600 26px var(--mono);color:var(--live)}
+ol.steps li:nth-child(n+4)::before{color:var(--cue)}
+ol.steps li p{color:var(--muted);font-size:15px}
+.where{display:flex;gap:8px;flex-wrap:wrap;font-size:13px}
+.where span{padding:3px 10px;border-radius:12px;border:1px solid var(--line-2);color:var(--muted)}
+ul.check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+ul.check li{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:10px;background:var(--bg-2);font-size:15px}
+ul.check li.done::before{background:var(--cue);box-shadow:inset 0 0 0 3px var(--bg-2)}
+ul.check li small{display:block;color:var(--faint);font-size:13px;margin-top:2px}
+ul.check li::before{content:"";flex-shrink:0;width:16px;height:16px;margin-top:3px;border-radius:4px;border:1.5px solid var(--cue)}
+
+/* modes */
+.mode{padding:16px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.wf{position:relative;aspect-ratio:3.4/1;max-width:100%;border-radius:8px;background:#08090A;margin-bottom:6px}
+.wf i{position:absolute;border-radius:3px}
+.mode p{font-size:14px;color:var(--muted)}
+.mode .key{font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* solo scenario */
+.solo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.solo .scr{display:flex;flex-direction:column;gap:8px}
+.solo .scr .lbl{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.cam{aspect-ratio:16/9;max-width:100%;border-radius:8px;background:#141A20;border:2px solid var(--live);position:relative;overflow:hidden}
+.cam .person{position:absolute;left:42%;bottom:0;width:16%;height:62%;border-radius:40% 40% 6px 6px;background:#243039}
+.cam .lower{position:absolute;left:6%;right:6%;bottom:7%;padding:6px 10px;border-radius:5px;background:#0B0C0E;font-family:var(--display);font-size:clamp(10px,1.3vw,14px);text-align:center}
+.cam .logo{position:absolute;top:7%;right:4%;width:9%;aspect-ratio:1;border-radius:6px;border:1.5px solid var(--cue);opacity:.8}
+.proj{aspect-ratio:16/9;max-width:100%;border-radius:8px;background:#17120E;border:2px solid var(--cue);display:grid;place-items:center;font-family:var(--display);font-size:clamp(13px,1.8vw,22px);text-align:center;padding:12px;line-height:1.35}
+
+/* palette */
+.pal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.sw2{display:flex;flex-direction:column;gap:8px}
+.sw2 div{height:88px;border-radius:14px}
+.sw2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.type{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.type div{padding:20px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.type .s{font-size:30px;line-height:1.1}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;position:relative}
+.road::before{content:"";position:absolute;left:8px;right:0;top:8px;height:2px;background:var(--line-2)}
+.ph{position:relative;padding:36px 20px 0 0;display:flex;flex-direction:column;gap:8px}
+.ph::before{content:"";position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--c)}
+.ph .n{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--c);font-weight:600}
+.ph p{color:var(--muted);font-size:15px}
+.ph .when{font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+footer.end{padding:56px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+footer.end p.big{font-family:var(--display);font-weight:600;font-size:clamp(34px,5vw,60px);line-height:1.05;max-width:none}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0}
+  nav.toc{display:none}
+  main{gap:84px}
+  .concepts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .flow,.two,.demo,.arch,.repo,.code,.team,.solo,.pipe,.gloss{grid-template-columns:minmax(0,1fr)}
+  .arrow{transform:rotate(90deg);margin:10px auto}
+  .via .arrow{transform:rotate(-90deg)}
+  .grid3,.grid2,ol.steps,.type,.seats{grid-template-columns:minmax(0,1fr)}
+  .bars,.pal,.concepts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .road{grid-template-columns:minmax(0,1fr);gap:28px}
+  .road::before{display:none}
+  .monitor{grid-template-columns:minmax(0,1fr)}
+  .statement{padding:32px 22px}
+  .mini .body{grid-template-columns:34px 1fr 1.4fr}
+  .mini .body .col.right{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="toc" aria-label="Indice">
+  <div class="brand"><div class="mark"><i></i></div><b>CUELITH</b></div>
+  <span class="part">I · Visione</span>
+  <a href="#problema"><span>01</span>Il problema</a>
+  <a href="#mercato"><span>02</span>Il mercato</a>
+  <a href="#visione"><span>03</span>La visione</a>
+  <a href="#nucleo"><span>04</span>Nucleo e moduli</a>
+  <a href="#profili"><span>05</span>Profili</a>
+  <span class="part">II · Come funziona</span>
+  <a href="#concetti"><span>06</span>Sorgenti, scene, uscite</a>
+  <a href="#look"><span>07</span>Un look per pubblico</a>
+  <a href="#solo"><span>08</span>Diretta e proiezione da solo</a>
+  <a href="#squadra"><span>09</span>Lavorare in squadra</a>
+  <a href="#estendere"><span>10</span>Estendere i moduli</a>
+  <span class="part">III · Ecosistema</span>
+  <a href="#architettura"><span>11</span>Architettura</a>
+  <a href="#famiglie"><span>12</span>Famiglie di moduli</a>
+  <a href="#github"><span>13</span>GitHub</a>
+  <a href="#manifest"><span>14</span>Anatomia di un modulo</a>
+  <a href="#ciclo"><span>15</span>Ciclo di vita</a>
+  <span class="part">IV · Interfaccia</span>
+  <a href="#modalita"><span>16</span>Le modalità</a>
+  <a href="#linguaggio"><span>17</span>Linguaggio visivo</a>
+  <span class="part">V · Specifica tecnica</span>
+  <a href="#guida"><span>18</span>Come usare la specifica</a>
+  <a href="#glossario"><span>19</span>Glossario</a>
+  <a href="#stack"><span>20</span>Stack tecnologico</a>
+  <a href="#processi"><span>21</span>Processi e confini</a>
+  <a href="#dati"><span>22</span>Modello dati</a>
+  <a href="#protocollo"><span>23</span>Protocollo</a>
+  <a href="#spec-moduli"><span>24</span>Specifica dei moduli</a>
+  <a href="#struttura"><span>25</span>Struttura delle repo</a>
+  <a href="#registry"><span>26</span>Registry e rilasci</a>
+  <a href="#sicurezza"><span>27</span>Sicurezza e affidabilità</a>
+  <a href="#mvp"><span>28</span>Criteri di completamento</a>
+  <a href="#aperte"><span>29</span>Decisioni aperte</a>
+  <a href="#roadmap"><span>30</span>Roadmap</a>
+</nav>
+
+<main>
+<section class="hero" id="top">
+  <span class="eyebrow">Live Projection OS · documento di progetto e specifica</span>
+  <h1>Cuelith</h1>
+  <p class="lead">Un solo software per proiettare culti, conferenze, concerti, dirette, teatro e schermi informativi. Un nucleo leggero, e tutto il resto si aggiunge come modulo.</p>
+  <div class="pills" aria-label="Modalità">
+    <span class="pill on">Culto</span><span class="pill">Conferenza</span><span class="pill">Concerto · VJ</span><span class="pill">Broadcast</span><span class="pill">Teatro</span><span class="pill">Signage</span>
+  </div>
+  <div class="monitor" aria-hidden="true">
+    <div class="screen pgm"><div class="sun"></div><span class="tag l">PROGRAMMA</span><span style="position:relative">Luce del mattino, vieni su di noi<br>riempi questo luogo</span></div>
+    <div class="screen pvw"><span class="tag c">ANTEPRIMA</span><span>Luce del mattino, resta con noi<br>fino a sera</span></div>
+  </div>
+  <div class="readme">
+    <h4>Come leggere questo documento</h4>
+    <p>Le parti I–IV spiegano il prodotto a chiunque. La parte V è la specifica tecnica: è scritta per chi sviluppa, persone o agenti come Claude Code, ed è la fonte di verità per costruire il nucleo, l'SDK, il registry e i moduli. Le etichette <span class="decision fixed">Deciso</span> indicano regole da rispettare; <span class="decision">Proposta</span> indica scelte ragionate che si possono rivedere prima di iniziare.</p>
+  </div>
+  <div class="readme">
+    <h4>Stato del documento</h4>
+    <p>Versione con i nomi reali (Cuelith). Le scelte fatte durante il lavoro stanno nelle <a href="../decisioni/">decisioni numerate</a> (0001–0009) e completano o correggono questo testo: librerie e crediti, formati dei canti, sfondi, licenza e aggiornamenti, sezioni dei canti, interfaccia e disposizioni, processi e permessi dei moduli, moduli a pagamento, postazioni in rete. Lo stato della Fase 0 è in fondo al capitolo 28.</p>
+  </div>
+</section>
+
+<!-- ======================= PARTE I ======================= -->
+<div class="partHead"><span>Parte I</span><strong>Visione</strong></div>
+
+<section id="problema">
+  <div class="head"><span class="eyebrow">01 · Il problema</span><h2>Un evento live oggi apre cinque programmi</h2></div>
+  <p class="lead">Ogni software ha le sue uscite, i suoi tasti e i suoi file. Servono più computer e più persone, e gli errori in diretta nascono nei passaggi tra un programma e l'altro.</p>
+  <div class="flow">
+    <div class="stack">
+      <div class="row"><b>Programma di proiezione</b><small>testi e slide</small></div>
+      <div class="row"><b>Programma per VJ</b><small>video e mapping</small></div>
+      <div class="row"><b>Mixer video</b><small>regia e diretta</small></div>
+      <div class="row"><b>Timer da palco</b><small>timer dei relatori</small></div>
+      <div class="row"><b>Programma di presentazioni</b><small>presentazioni</small></div>
+    </div>
+    <div class="arrow" aria-hidden="true"></div>
+    <div class="one"><span class="eyebrow">Con Cuelith</span><strong>Un programma</strong><p>Un solo motore di uscita, un solo file di show, una squadra che parla la stessa lingua.</p></div>
+  </div>
+</section>
+
+<section id="mercato">
+  <div class="head"><span class="eyebrow">02 · Il mercato</span><h2>Ognuno eccelle in una cosa sola</h2></div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Tipo di programma</th><th>Punto di forza</th><th>Cosa manca</th></tr></thead>
+    <tbody>
+      <tr><td>Proiezione professionale a pagamento</td><td>Uscite multiple, NDI, compositing a 8 layer</td><td>Costoso, collaborazione debole</td></tr>
+      <tr><td>Proiezione semplice per volontari</td><td>Facile per i volontari</td><td>Meno adatto alla regia live</td></tr>
+      <tr><td>Proiezione gratuita e open source</td><td>Gratuiti e open source</td><td>Poca regia video e streaming</td></tr>
+      <tr><td>Programma per VJ</td><td>Clip a layer, mapping, DMX, timecode</td><td>Nessuna scaletta né testi</td></tr>
+      <tr><td>Mixer video e diretta</td><td>Regia video e diretta</td><td>Niente canti, Bibbia, scalette</td></tr>
+      <tr><td>Timer da palco</td><td>Timer e rundown per eventi</td><td>Fa una sola cosa</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">Sintesi qualitativa da recensioni di settore del 2026.</p>
+</section>
+
+<section id="visione">
+  <div class="statement">
+    <span class="eyebrow">03 · La visione</span>
+    <p class="big" style="margin-top:20px">Un nucleo.<br>Sei modalità.<br><em>Moduli a scelta.</em></p>
+    <p class="lead" style="margin-top:24px">Il software principale fa poco e lo fa benissimo. Tutto il resto si installa, si accende e si spegne senza riavviare lo show.</p>
+  </div>
+</section>
+
+<section id="nucleo">
+  <div class="head"><span class="eyebrow">04 · Nucleo e moduli</span><h2>Di base è leggero. I mockup mostravano la regia completa.</h2></div>
+  <p class="lead">Le schermate del progetto avevano molti moduli già installati e accesi. Appena installato, Cuelith parte con una sola modalità generale, <b>Presenta</b>. Anche Culto, Conferenza, VJ e Broadcast sono moduli.</p>
+  <div class="two">
+    <div class="box core">
+      <h3>Nel nucleo, sempre</h3>
+      <ul>
+        <li>Modalità Presenta</li>
+        <li>Scaletta e libreria di elementi</li>
+        <li>Slide di testo, immagini, video</li>
+        <li>Anteprima e programma, transizioni</li>
+        <li>Sorgenti, scene e uscite su monitor</li>
+        <li>Look per uscita e stage semplice</li>
+        <li>Motore e postazioni in rete locale</li>
+        <li>Gestore moduli e marketplace</li>
+      </ul>
+    </div>
+    <div class="box mods">
+      <h3>Moduli, tutti spegnibili</h3>
+      <div class="chips">
+        <span class="chip">Modalità Culto</span><span class="chip">Modalità Conferenza</span><span class="chip">Modalità VJ</span><span class="chip">Modalità Broadcast</span><span class="chip">Bibbia</span><span class="chip">Timer</span><span class="chip">Sottopancia</span><span class="chip">Camera e schede di cattura</span><span class="chip">Diretta RTMP e SRT</span><span class="chip">Uscita NDI</span><span class="chip">Multistream</span><span class="chip">MIDI · OSC</span><span class="chip">DMX</span><span class="chip">Projection mapping</span><span class="chip">PowerPoint e Keynote</span><span class="chip">Domande dal pubblico</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:12px">Prova: accendi e spegni i moduli</h3>
+  <div class="demo">
+    <div class="toggles" id="toggles">
+      <label class="t" for="m-culto">Modalità Culto<input class="sw" type="checkbox" id="m-culto" data-m="culto"></label>
+      <label class="t" for="m-bible">Bibbia<input class="sw" type="checkbox" id="m-bible" data-m="bible"></label>
+      <label class="t" for="m-timer">Timer<input class="sw" type="checkbox" id="m-timer" data-m="timer"></label>
+      <label class="t" for="m-lower">Sottopancia<input class="sw" type="checkbox" id="m-lower" data-m="lower"></label>
+      <label class="t" for="m-ndi">Uscita NDI<input class="sw" type="checkbox" id="m-ndi" data-m="ndi"></label>
+      <label class="t" for="m-conf">Modalità Conferenza<input class="sw" type="checkbox" id="m-conf" data-m="conf"></label>
+      <p class="count" id="count" aria-live="polite">Nucleo nudo · 0 moduli</p>
+    </div>
+    <div class="mini" aria-label="Anteprima dell'interfaccia">
+      <div class="bar"><b>CUELITH</b><span class="mtab on">Presenta</span><span class="mtab" data-show="culto" hidden>Culto</span><span class="mtab" data-show="conf" hidden>Conferenza</span><span style="flex:1"></span><span class="muted" data-show="ndi" hidden>● NDI</span></div>
+      <div class="body">
+        <div class="dock">
+          <i data-show="bible" hidden>BI</i><i data-show="timer" hidden>TI</i><i data-show="lower" hidden>SP</i><i data-show="ndi" hidden>NDI</i>
+          <i class="plus">+</i>
+        </div>
+        <div class="col">
+          <span class="lbl">Scaletta</span>
+          <div class="ln live"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+          <div class="panel" data-show="culto" hidden>Libreria canti · arrangiamenti</div>
+          <div class="panel" data-show="conf" hidden>Rundown con ritardi</div>
+        </div>
+        <div class="col">
+          <span class="lbl">Slide</span>
+          <div class="tiles"><div></div><div class="l"></div><div class="c"></div><div></div><div></div><div></div></div>
+          <div class="panel" data-show="bible" hidden>Bibbia · Gv 3:16 · Diodati</div>
+          <div class="panel" data-show="conf" hidden>Timer relatore · 12:48</div>
+        </div>
+        <div class="col right">
+          <span class="lbl">Programma</span>
+          <div class="p-pgm"></div>
+          <span class="lbl">Anteprima</span>
+          <div class="p-pvw"></div>
+          <div class="panel" data-show="timer" hidden>Countdown · 05:00</div>
+          <div class="panel" data-show="lower" hidden>Sottopancia · [NOME]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="profili">
+  <div class="head"><span class="eyebrow">05 · Profili</span><h2>Ognuno installa solo ciò che gli serve</h2></div>
+  <p class="lead">Quattro installazioni possibili. Il blocco ciano è sempre lo stesso nucleo, i blocchi viola sono moduli.</p>
+  <div class="bars">
+    <div class="bcol"><div class="blk">Timer</div><div class="blk">Bibbia</div><div class="blk">Modalità Culto</div><div class="blk core">Nucleo</div><span class="bname">Chiesa piccola</span><span class="bn">3 moduli</span></div>
+    <div class="bcol"><div class="blk">Diretta RTMP</div><div class="blk">Camera</div><div class="blk">Sottopancia</div><div class="blk">Timer</div><div class="blk">Bibbia</div><div class="blk">Modalità Culto</div><div class="blk core">Nucleo</div><span class="bname">Chiesa con diretta</span><span class="bn">6 moduli</span></div>
+    <div class="bcol"><div class="blk">Domande dal pubblico</div><div class="blk">Multistream</div><div class="blk">Uscita NDI</div><div class="blk">Sottopancia</div><div class="blk">Timer</div><div class="blk">Modalità Conferenza</div><div class="blk core">Nucleo</div><span class="bname">Conferenza</span><span class="bn">6 moduli</span></div>
+    <div class="bcol"><div class="blk">DMX</div><div class="blk">Projection mapping</div><div class="blk">Uscita NDI</div><div class="blk">Timer</div><div class="blk">Modalità Concerto · VJ</div><div class="blk core">Nucleo</div><span class="bname">Tour VJ</span><span class="bn">5 moduli</span></div>
+  </div>
+</section>
+
+<!-- ======================= PARTE II ======================= -->
+<div class="partHead"><span>Parte II</span><strong>Come funziona</strong></div>
+
+<section id="concetti">
+  <div class="head"><span class="eyebrow">06 · Sorgenti, scene, uscite</span><h2>Quattro concetti separati: cosa, come, dove</h2></div>
+  <p class="lead">Tutto Cuelith poggia su quattro concetti distinti. Tenerli separati è ciò che permette di proiettare e fare diretta insieme, e di mostrare cose diverse a pubblici diversi con un solo comando.</p>
+  <div class="concepts">
+    <div class="cpt"><span class="q">cosa esiste</span><h3>Sorgente</h3><p>Qualcosa che produce immagine: la presentazione, una camera, un video, un logo, un flusso NDI in entrata.</p></div>
+    <div class="cpt"><span class="q">come appare</span><h3>Look</h3><p>Come si disegna il contenuto di una sorgente: testo grande con sfondo, fascia in basso, testo con accordi.</p></div>
+    <div class="cpt"><span class="q">come si combina</span><h3>Scena</h3><p>Un mix di sorgenti con posizione e livello, come in un mixer video: camera più testo in basso più logo.</p></div>
+    <div class="cpt"><span class="q">dove va</span><h3>Uscita</h3><p>Una destinazione: un monitor, un proiettore, NDI, una diretta, una registrazione. Riceve una scena o una sola sorgente.</p></div>
+  </div>
+  <div class="pipe" aria-label="Flusso da sorgenti a uscite">
+    <div class="pcol"><span class="lbl">Sorgenti</span><div class="node t">Presentazione<small>scaletta e slide</small></div><div class="node">Camera<small>modulo cattura</small></div><div class="node">Logo<small>immagine</small></div></div>
+    <div class="arrow" aria-hidden="true"></div>
+    <div class="pcol"><span class="lbl">Scene e look</span><div class="node">Scena «Camera + testo»<small>camera, testo come fascia, logo</small></div><div class="node t">Look «Sala»<small>sfondo e testo grande</small></div><div class="node t">Look «Palco»<small>testo, prossimo, orologio</small></div></div>
+    <div class="arrow" aria-hidden="true"></div>
+    <div class="pcol"><span class="lbl">Uscite</span><div class="node o">Diretta<small>riceve la scena</small></div><div class="node o">Proiettore e TV<small>presentazione, look Sala</small></div><div class="node o">Monitor palco<small>presentazione, look Palco</small></div></div>
+  </div>
+  <p class="note">Regola: la modalità scelta cambia solo la schermata dell'operatore. Le uscite si configurano a parte e restano in onda qualunque modalità tu stia usando.</p>
+</section>
+
+<section id="look">
+  <div class="head"><span class="eyebrow">07 · Un look per pubblico</span><h2>Premi «avanti» una volta, ogni schermo mostra ciò che gli serve</h2></div>
+  <p class="lead">Ogni slide ha più campi: testo, accordi, note del relatore, riferimento. Ogni uscita usa un look che decide quali campi mostrare e come. Il contenuto è uno solo, quindi nessuno schermo resta indietro.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Uscita</th><th>Riceve</th><th>Look · campi visibili</th><th>Chi la controlla</th></tr></thead>
+    <tbody>
+      <tr><td>Proiettore e TV</td><td>Sorgente Presentazione</td><td>Sala · sfondo, testo grande</td><td>Regia testi</td></tr>
+      <tr><td>Monitor musicisti</td><td>Sorgente Presentazione</td><td>Palco · testo, prossima slide, accordi, orologio, messaggi</td><td>Regia testi</td></tr>
+      <tr><td>Monitor relatore</td><td>Sorgente Presentazione</td><td>Relatore · note, slide successiva, timer, messaggi dalla regia</td><td>Regia testi</td></tr>
+      <tr><td>Diretta</td><td>Scena attiva</td><td>Diretta · testo come fascia in basso sopra la camera, logo</td><td>Regia diretta</td></tr>
+      <tr><td>Registrazione</td><td>Specchio della diretta</td><td>Uguale alla diretta</td><td>Regia diretta</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid3">
+    <div class="fam"><h3>Comandi per uscita</h3><p>Oscura, blocca l'immagine, o metti una schermata di cortesia su una sola uscita. Le altre continuano.</p></div>
+    <div class="fam"><h3>Contenuti mirati</h3><p>Un elemento della scaletta può essere marcato «solo diretta» o «solo sala», per esempio un avviso per chi segue da casa.</p></div>
+    <div class="fam"><h3>Uscite illimitate</h3><p>Il limite è l'hardware: monitor collegati per il nucleo, NDI e diretta con i moduli.</p></div>
+  </div>
+</section>
+
+<section id="solo">
+  <div class="head"><span class="eyebrow">08 · Diretta e proiezione da solo</span><h2>Una persona, due regie, nessuna confusione</h2></div>
+  <p class="lead">Caso tipico: sei da solo, fai una diretta con camera, testi e logo come in un mixer video, e in sala devi proiettare solo la presentazione. In Cuelith il proiettore riceve la sola sorgente Presentazione; la diretta riceve la scena completa.</p>
+  <div class="solo" aria-label="Esempio di cosa vede la diretta e cosa vede la sala">
+    <div class="scr"><span class="lbl" style="color:var(--live)">Diretta · scena</span><div class="cam"><div class="person"></div><div class="logo"></div><div class="lower">Luce del mattino, vieni su di noi</div></div></div>
+    <div class="scr"><span class="lbl" style="color:var(--cue)">Proiettore · solo presentazione</span><div class="proj">Luce del mattino, vieni su di noi<br>riempi questo luogo</div></div>
+  </div>
+  <div class="grid2">
+    <div class="fam"><h3>Un tasto, due schermi</h3><p>«Avanti» cambia la slide sia in sala sia nella fascia della diretta.</p></div>
+    <div class="fam"><h3>Scene indipendenti</h3><p>Passare da «camera larga» a «slide a tutto schermo» nella diretta non tocca il proiettore.</p></div>
+    <div class="fam"><h3>Stessa slide, due aspetti</h3><p>Testo grande in sala, fascia in basso in diretta. È la stessa sorgente con due look.</p></div>
+    <div class="fam"><h3>Scene automatiche</h3><p>Regole opzionali: «se parte un video, la diretta va al video», «se c'è un canto, camera più testo». Tu pensi solo ad andare avanti.</p></div>
+  </div>
+  <p class="muted">Chi vuole continuare a usare il proprio programma di regia può farlo: Cuelith gli manda la presentazione via NDI e al proiettore via HDMI.</p>
+</section>
+
+<section id="squadra">
+  <div class="head"><span class="eyebrow">09 · Lavorare in squadra</span><h2>Un motore, tante postazioni</h2></div>
+  <p class="lead">Il nucleo è diviso in due parti che parlano via rete locale. Da soli girano sullo stesso computer; in squadra ognuno lavora dalla sua postazione con la sua modalità.</p>
+  <div class="team">
+    <div class="engine"><span class="eyebrow">Motore</span><h3>Il computer collegato alle uscite</h3><p>È l'unica fonte di verità: stato dello show, uscite, moduli. Se una postazione si scollega, le uscite continuano.</p></div>
+    <div class="seats">
+      <div class="seat"><span class="role">regia testi</span><b>Tu · modalità Culto</b><small>scaletta, testi, Bibbia</small></div>
+      <div class="seat"><span class="role">regia diretta</span><b>Secondo operatore · Broadcast</b><small>scene, audio, stream</small></div>
+      <div class="seat"><span class="role">telecomando</span><b>Pastore o relatore</b><small>avanti, indietro, dal telefono</small></div>
+      <div class="seat"><span class="role">visualizzatore</span><b>Musicisti</b><small>accordi e testo su tablet</small></div>
+    </div>
+  </div>
+  <ul class="plain">
+    <li><b>Ruoli e proprietà.</b> Ogni ruolo può possedere uscite o layer: chi fa la diretta non può oscurare il proiettore per sbaglio.</li>
+    <li><b>Rete locale.</b> Serve solo il Wi-Fi o il cavo della sala; internet non è necessario. Le postazioni si abbinano con un codice mostrato sul motore.</li>
+    <li><b>Preparazione.</b> La scaletta si può preparare in più persone nei giorni prima; il giorno dell'evento lo show si apre sul motore.</li>
+    <li><b>Da soli.</b> Il modo «da solo» è solo un caso particolare: motore e postazione sullo stesso PC.</li>
+  </ul>
+</section>
+
+<section id="estendere">
+  <div class="head"><span class="eyebrow">10 · Estendere i moduli</span><h2>I moduli non sono fissi: si creano, si estendono, si combinano</h2></div>
+  <p class="lead">I moduli mostrati sono esempi. L'SDK è aperto e prevede quattro modi di aggiungere funzioni.</p>
+  <div class="grid2">
+    <div class="fam"><h3 style="color:var(--cue)">Nuovo modulo</h3><p>Una funzione che non esiste ancora: un nuovo protocollo, una nuova modalità, un nuovo tipo di elemento.</p><span class="ex">contributes: { sources, panels, … }</span></div>
+    <div class="fam"><h3 style="color:var(--mod)">Estensione</h3><p>Un modulo offre punti di aggancio e un altro li riempie. Bibbia accetta nuove traduzioni; un modulo «Diodati 1649» la estende senza rifarla.</p><span class="ex">extends: [{ point: "cuelith.bible/translations" }]</span></div>
+    <div class="fam"><h3 style="color:var(--stage)">Sostituzione</h3><p>Il nucleo definisce servizi, come le transizioni o il riconoscimento vocale. Un modulo ne offre una versione migliore e l'utente sceglie quale usare.</p><span class="ex">provides: ["service:transitions"]</span></div>
+    <div class="fam"><h3 style="color:var(--live-soft)">Unione</h3><p>Un modulo dipende da altri e li collega: «quando parte un versetto, mandalo anche come fascia in diretta». Oppure un pacchetto che installa più moduli insieme.</p><span class="ex">dependencies: { "cuelith.bible": "^1.0" }</span></div>
+  </div>
+  <p class="muted">Le versioni seguono il versionamento semantico: un aggiornamento che cambia il comportamento alza la versione maggiore, e i moduli dipendenti restano sulla versione compatibile.</p>
+</section>
+
+<!-- ======================= PARTE III ======================= -->
+<div class="partHead"><span>Parte III</span><strong>Ecosistema</strong></div>
+
+<section id="architettura">
+  <div class="head"><span class="eyebrow">11 · Architettura</span><h2>Quattro strati, un solo contratto: l'SDK</h2></div>
+  <div class="arch">
+    <div class="stack">
+      <div class="layer L1"><b>Postazioni e modalità</b><small>interfaccia, pannelli, layout, tasti</small></div>
+      <div class="layer L2"><b>SDK · protocollo</b><small>comandi, eventi, stato, contributi</small></div>
+      <div class="layer L3"><b>Motore live</b><small>show, compositor, scene, uscite</small></div>
+      <div class="layer L4"><b>Sistema</b><small>GPU, schermi, rete, audio, video</small></div>
+    </div>
+    <div class="via"><div class="arrow" aria-hidden="true"></div><span>solo via SDK</span></div>
+    <div class="stack">
+      <span class="eyebrow" style="color:var(--mod)">Moduli</span>
+      <div class="plug"><b>Modulo TypeScript</b><small>processo separato con permessi</small></div>
+      <div class="plug"><b>Modulo nativo</b><small>NDI, Dante: eseguibile separato</small></div>
+      <div class="plug"><b>Pannelli dei moduli</b><small>nella postazione, in un riquadro isolato</small></div>
+    </div>
+  </div>
+  <p class="note">Se un modulo si blocca, il motore continua: le uscite non cadono mai.</p>
+</section>
+
+<section id="famiglie">
+  <div class="head"><span class="eyebrow">12 · Famiglie di moduli</span><h2>Sei famiglie, una repo per ogni modulo</h2></div>
+  <div class="grid3">
+    <div class="fam"><h3 style="color:var(--cue)">Funzioni</h3><p>Bibbia, timer, sottopancia, sottotitoli live, domande dal pubblico</p></div>
+    <div class="fam"><h3 style="color:var(--live-soft)">Modalità</h3><p>Culto, conferenza, concerto · VJ, broadcast, teatro, signage</p></div>
+    <div class="fam"><h3 style="color:var(--blue)">Protocolli video</h3><p>Camera e cattura, NDI, Syphon e Spout, SDI, SRT, RTMP</p></div>
+    <div class="fam"><h3 style="color:var(--stage)">Audio</h3><p>Dante, ASIO e CoreAudio, analisi FFT, timecode LTC</p></div>
+    <div class="fam"><h3 style="color:var(--mod)">Rete e controllo</h3><p>OSC, MIDI, Art-Net e sACN, Ableton Link, API REST, Stream Deck</p></div>
+    <div class="fam"><h3 style="color:var(--pink)">Integrazioni e temi</h3><p>Planning Center, PowerPoint e Keynote, CCLI, temi grafici, layout salvati</p></div>
+  </div>
+</section>
+
+<section id="github">
+  <div class="head"><span class="eyebrow">13 · Organizzazione GitHub</span><h2>Una organizzazione, una repo per modulo</h2></div>
+  <div class="repo">
+    <div class="tree">
+      <div class="org">github.com/Cuelith</div>
+      <div class="r"><span class="base">cuelith-core</span><span>il contenitore: motore e postazione</span></div>
+      <div class="r"><span class="base">cuelith-sdk</span><span>protocollo, tipi, strumenti per i moduli</span></div>
+      <div class="r"><span class="base">cuelith-registry</span><span>indice del marketplace</span></div>
+      <div class="r"><span class="base">plugin-template</span><span>punto di partenza per un modulo</span></div>
+      <div class="r"><span class="base">cuelith-docs</span><span>questo documento e le guide</span></div>
+      <div class="r"><span class="plg">plugin-mode-culto</span><span>modalità</span></div>
+      <div class="r"><span class="plg">plugin-bible</span><span>funzione</span></div>
+      <div class="r"><span class="plg">plugin-capture</span><span>camera e schede di cattura</span></div>
+      <div class="r"><span class="plg">plugin-stream</span><span>diretta RTMP e SRT</span></div>
+      <div class="r"><span class="plg">plugin-ndi</span><span>protocollo video di rete</span></div>
+      <div class="r"><span class="plg">plugin-osc-midi</span><span>rete e controllo</span></div>
+      <div class="r"><span class="plg">plugin-…</span><span>uno per ogni modulo</span></div>
+    </div>
+    <div class="rules">
+      <div class="rule r1"><h3>Il nucleo non conosce i moduli</h3><p>Li scopre leggendo cuelith-registry. Nessun modulo vive dentro cuelith-core.</p></div>
+      <div class="rule r2"><h3>Ogni repo vive da sola</h3><p>Versioni, licenza, issue e manutentori suoi.</p></div>
+      <div class="rule r3"><h3>Aperto alla community</h3><p>Un modulo esterno entra con una pull request al registry.</p></div>
+    </div>
+  </div>
+  <p class="src">Le repo esistono nell'organizzazione Cuelith su GitHub; i moduli elencati oltre a plugin-songs e plugin-locale-it sono esempi di quelli futuri.</p>
+</section>
+
+<section id="manifest">
+  <div class="head"><span class="eyebrow">14 · Anatomia di un modulo</span><h2>Un file dice chi è, di cosa ha bisogno e cosa aggiunge</h2></div>
+  <div class="code">
+<pre><span class="cm">// plugin-bible/cuelith-plugin.json (estratto)</span>
+{
+  <span class="k1">"id"</span>: "cuelith.bible",
+  <span class="k1">"version"</span>: "1.4.0",
+  <span class="k2">"engines"</span>: { "cuelith": "^1.0.0" },
+  <span class="k3">"runtime"</span>: { "type": "node", "entry": "dist/main.js" },
+  <span class="k4">"permissions"</span>: ["storage", "network"],
+  <span class="k5">"contributes"</span>: {
+    "panels": [{ "id": "bible.search" }],
+    "itemTypes": [{ "id": "bible.passage" }],
+    "extensionPoints": [{ "id": "translations" }]
+  }
+}</pre>
+    <dl>
+      <div><dt class="k2">engines</dt><dd>Con quali versioni del nucleo funziona. Il marketplace nasconde i moduli incompatibili.</dd></div>
+      <div><dt class="k3">runtime</dt><dd>Processo Node per i moduli TypeScript, eseguibile nativo per NDI o Dante.</dd></div>
+      <div><dt class="k4">permissions</dt><dd>Mostrati all'utente prima di installare, come su un telefono.</dd></div>
+      <div><dt class="k5">contributes</dt><dd>Cosa appare nell'interfaccia e nel motore. Spegnere il modulo toglie proprio questi elementi.</dd></div>
+    </dl>
+  </div>
+  <p class="src">Lo schema completo è nella parte V, capitolo 24.</p>
+</section>
+
+<section id="ciclo">
+  <div class="head"><span class="eyebrow">15 · Ciclo di vita</span><h2>Dalla repo al pulsante Installa</h2></div>
+  <div class="where"><span>Passi 1–3: nella repo del modulo</span><span>Passo 4: nel registry</span><span>Passi 5–6: nel contenitore</span></div>
+  <ol class="steps">
+    <li><h3>Sviluppo</h3><p>Dal template, con SDK e motore di prova.</p></li>
+    <li><h3>Release</h3><p>Un tag su GitHub: le Actions compilano, testano e pubblicano il pacchetto.</p></li>
+    <li><h3>Firma</h3><p>Pacchetto firmato, impronta SHA-256 salvata nel registry.</p></li>
+    <li><h3>Revisione</h3><p>Pull request a cuelith-registry, controllo automatico del manifest e dei permessi.</p></li>
+    <li><h3>Marketplace</h3><p>Compare nel contenitore con descrizione e permessi.</p></li>
+    <li><h3>Uso</h3><p>Installa, attiva, spegni, aggiorna, senza riavviare lo show.</p></li>
+  </ol>
+</section>
+
+<!-- ======================= PARTE IV ======================= -->
+<div class="partHead"><span>Parte IV</span><strong>Interfaccia</strong></div>
+
+<section id="modalita">
+  <div class="head"><span class="eyebrow">16 · Le modalità</span><h2>Cambia la regia, l'uscita resta in onda</h2></div>
+  <p class="lead">Si passa da una modalità all'altra con ⌘1–⌘6 o con la palette ⌘K. Una modalità è solo una disposizione di pannelli con le sue scorciatoie.</p>
+  <div class="grid3">
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:20%;height:88%;background:#2A2E35"></i><i style="left:26%;top:6%;width:42%;height:60%;background:var(--cue)"></i><i style="left:71%;top:6%;width:26%;height:40%;background:var(--live)"></i><i style="left:71%;top:50%;width:26%;height:44%;background:#2A2E35"></i></div><h3>Culto</h3><p>Scaletta, canti a gruppi colorati, Bibbia, layer</p><span class="key">⌘1</span></div>
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:22%;height:88%;background:#2A2E35"></i><i style="left:28%;top:6%;width:44%;height:50%;background:var(--cue)"></i><i style="left:28%;top:62%;width:44%;height:32%;background:#2A2E35"></i><i style="left:75%;top:6%;width:22%;height:88%;background:var(--live)"></i></div><h3>Conferenza</h3><p>Timer relatore, rundown con ritardi, domande</p><span class="key">⌘2</span></div>
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:70%;height:64%;background:#9D8CFF"></i><i style="left:3%;top:74%;width:70%;height:20%;background:var(--stage)"></i><i style="left:76%;top:6%;width:21%;height:48%;background:var(--live)"></i><i style="left:76%;top:58%;width:21%;height:36%;background:#2A2E35"></i></div><h3>Concerto · VJ</h3><p>Clip a layer, BPM, mapping, show timeline</p><span class="key">⌘3</span></div>
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:42%;height:44%;background:var(--cue)"></i><i style="left:55%;top:6%;width:42%;height:44%;background:var(--live)"></i><i style="left:3%;top:56%;width:94%;height:38%;background:#2A2E35"></i><i style="left:47%;top:14%;width:6%;height:28%;background:#2A2E35"></i></div><h3>Broadcast</h3><p>Sala e diretta affiancate, scene, audio, stream</p><span class="key">⌘4</span></div>
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:94%;height:22%;background:var(--stage)"></i><i style="left:3%;top:34%;width:60%;height:60%;background:#2A2E35"></i><i style="left:66%;top:34%;width:31%;height:28%;background:var(--live)"></i><i style="left:66%;top:66%;width:31%;height:28%;background:#2A2E35"></i></div><h3>Teatro</h3><p>Cue list a tempo, sottotitoli, scenografie</p><span class="key">⌘5</span></div>
+    <div class="mode"><div class="wf"><i style="left:3%;top:6%;width:60%;height:88%;background:#2A2E35"></i><i style="left:66%;top:6%;width:31%;height:42%;background:var(--cue)"></i><i style="left:66%;top:52%;width:31%;height:42%;background:#2A2E35"></i><i style="left:8%;top:70%;width:50%;height:16%;background:var(--stage)"></i></div><h3>Signage</h3><p>Palinsesti in loop, zone, orari</p><span class="key">⌘6</span></div>
+  </div>
+</section>
+
+<section id="linguaggio">
+  <div class="head"><span class="eyebrow">17 · Linguaggio visivo</span><h2>Un codice colore valido in ogni modalità</h2></div>
+  <div class="pal">
+    <div class="sw2"><div style="background:var(--live)"></div><b>In onda</b><small>#FF5B3A · programma, tally</small></div>
+    <div class="sw2"><div style="background:var(--cue)"></div><b>Prossimo</b><small>#37D1BF · anteprima, cue</small></div>
+    <div class="sw2"><div style="background:var(--stage)"></div><b>Palco e avvisi</b><small>#F2B441 · stage, ritardi</small></div>
+    <div class="sw2"><div style="background:var(--mod)"></div><b>Moduli</b><small>#C9BFFF · installati</small></div>
+  </div>
+  <div class="type">
+    <div><span class="s" style="font-family:var(--display);font-weight:600">Fraunces</span><span class="muted">testi sullo schermo e titoli</span></div>
+    <div><span class="s" style="font-weight:600">Schibsted Grotesk</span><span class="muted">interfaccia di regia</span></div>
+    <div><span class="s mono">00:42:17:08</span><span class="muted">timecode e orari</span></div>
+  </div>
+  <p class="muted">Interfaccia scura per non disturbare la sala, pulsanti grandi per lavorare sotto pressione. I moduli ricevono questi colori come variabili dall'SDK, così l'interfaccia resta coerente anche con moduli di terzi.</p>
+</section>
+
+<!-- ======================= PARTE V ======================= -->
+<div class="partHead"><span>Parte V</span><strong>Specifica tecnica</strong></div>
+
+<section id="guida">
+  <div class="head"><span class="eyebrow">18 · Come usare la specifica</span><h2>Istruzioni per chi sviluppa, persone o Claude Code</h2></div>
+  <p>Questa parte è la fonte di verità tecnica. Chi implementa legge prima le parti I–II per capire il prodotto, poi segue questa parte alla lettera per le regole marcate <span class="decision fixed">Deciso</span> e usa le <span class="decision">Proposta</span> come punto di partenza, chiedendo conferma prima di cambiarle.</p>
+  <ul class="check">
+    <li>Lavorare a piccoli passi: un diff alla volta, ognuno provato nell'app in esecuzione prima del successivo.</li>
+    <li>Rispettare l'ordine del capitolo 28: prima il nucleo e il protocollo, poi l'SDK, poi il primo modulo di esempio, solo dopo i moduli reali.</li>
+    <li>Non inserire mai funzioni che sono moduli dentro cuelith-core. Se serve una funzione non prevista dal nucleo, va aggiunto un punto di estensione nell'SDK.</li>
+    <li>Ogni modifica al protocollo aggiorna insieme: tipi in cuelith-sdk, motore, postazione, documentazione, numero di versione.</li>
+    <li>La regola «le uscite non cadono mai» ha test automatici dedicati e non si rompe per nessun motivo.</li>
+    <li>In ogni repo mettere un file <code>CLAUDE.md</code> che rimanda a questo documento e riassume le regole della repo.</li>
+  </ul>
+</section>
+
+<section id="glossario">
+  <div class="head"><span class="eyebrow">19 · Glossario</span><h2>Nomi da usare nel codice</h2></div>
+  <p>Il codice usa i nomi inglesi, l'interfaccia quelli italiani.</p>
+  <dl class="gloss">
+    <div><dt>Engine <span>Motore</span></dt><dd>Processo che possiede lo stato dello show, il compositor e le uscite. Uno solo per evento.</dd></div>
+    <div><dt>Client <span>Postazione</span></dt><dd>Interfaccia di regia che comanda il motore via protocollo. Zero o più.</dd></div>
+    <div><dt>Show <span>Show</span></dt><dd>File con scaletta, elementi, scene, look, uscite e regole. Estensione <code>.cuelith</code>.</dd></div>
+    <div><dt>Item <span>Elemento</span></dt><dd>Voce della libreria: un canto, un passo biblico, un video, una presentazione. Ha un tipo e delle slide.</dd></div>
+    <div><dt>Slide <span>Slide</span></dt><dd>Unità che va in onda. Ha campi tipizzati: testo, accordi, note, riferimento.</dd></div>
+    <div><dt>Playlist <span>Scaletta</span></dt><dd>Sequenza ordinata di elementi per un evento.</dd></div>
+    <div><dt>Source <span>Sorgente</span></dt><dd>Qualcosa che produce immagine. La presentazione è la sorgente principale del nucleo.</dd></div>
+    <div><dt>Layer <span>Layer</span></dt><dd>Livello della sorgente Presentazione: background, content, lowerThird, message, logo.</dd></div>
+    <div><dt>Look <span>Look</span></dt><dd>Regole di disegno di una sorgente su un'uscita: campi visibili e stile.</dd></div>
+    <div><dt>Scene <span>Scena</span></dt><dd>Composizione di sorgenti con posizione, ritaglio, opacità e ordine.</dd></div>
+    <div><dt>Output <span>Uscita</span></dt><dd>Destinazione: display, ndi, stream, record, virtual. Riceve un Feed.</dd></div>
+    <div><dt>Feed <span>Segnale</span></dt><dd>Cosa riceve un'uscita: una scena, una sola sorgente con un look, oppure lo specchio di un'altra uscita.</dd></div>
+    <div><dt>Mode <span>Modalità</span></dt><dd>Disposizione di pannelli della postazione. Non tocca mai le uscite.</dd></div>
+    <div><dt>Rule <span>Regola</span></dt><dd>Automazione: quando succede un evento, esegui dei comandi.</dd></div>
+    <div><dt>Plugin <span>Modulo</span></dt><dd>Pacchetto installabile con manifest, eseguito fuori dal motore.</dd></div>
+    <div><dt>Role <span>Ruolo</span></dt><dd>Insieme di permessi di una postazione, con eventuale proprietà di uscite e layer.</dd></div>
+  </dl>
+</section>
+
+<section id="stack">
+  <div class="head"><span class="eyebrow">20 · Stack tecnologico</span><span class="decision">Proposta</span><h2>Tutto in TypeScript, dove possibile</h2></div>
+  <p><b>Confermato</b> con l'avvio della Fase 0 (Electron, non altri contenitori). Scelta pensata per sviluppare con l'aiuto dell'IA, con una sola lingua in quasi tutto il progetto e costo zero per repo, rilasci e registry.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Parte</th><th>Tecnologia</th><th>Motivo</th></tr></thead>
+    <tbody>
+      <tr><td>Linguaggio</td><td>TypeScript strict, Node.js LTS</td><td>Un solo linguaggio per motore, postazione, SDK e moduli</td></tr>
+      <tr><td>App desktop</td><td>Electron</td><td>Finestre a schermo intero per ogni monitor, stesso motore di rendering ovunque</td></tr>
+      <tr><td>Compositor e uscite</td><td>WebGL 2 nelle finestre di uscita (PixiJS), una finestra per display</td><td>Accelerazione GPU, layer, transizioni, testo di qualità</td></tr>
+      <tr><td>Postazione</td><td>React + Vite + Tailwind, servita dal motore via HTTP</td><td>Apribile anche da browser o tablet in rete locale</td></tr>
+      <tr><td>Protocollo</td><td>JSON-RPC 2.0 su WebSocket, patch di stato RFC 6902</td><td>Semplice, leggibile, uguale per postazioni e moduli</td></tr>
+      <tr><td>Video e diretta</td><td>FFmpeg come processo figlio (nei moduli capture e stream)</td><td>Codifica H.264, RTMP e SRT affidabili</td></tr>
+      <tr><td>Scoperta in rete</td><td>mDNS, servizio <code>_cuelith._tcp</code></td><td>Le postazioni trovano il motore senza configurare indirizzi</td></tr>
+      <tr><td>Monorepo del nucleo</td><td>pnpm workspaces + Turborepo</td><td>Pacchetti separati nella stessa repo</td></tr>
+      <tr><td>Test</td><td>Vitest per la logica, Playwright per postazione e uscite</td><td>Test veloci e test end-to-end</td></tr>
+      <tr><td>Qualità</td><td>ESLint, Prettier, Conventional Commits, Changesets</td><td>Versioni e changelog automatici</td></tr>
+      <tr><td>CI e rilasci</td><td>GitHub Actions, GitHub Releases, electron-builder</td><td>Gratuito per repo pubbliche</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">Se in futuro il compositor diventasse un limite di prestazioni, può essere sostituito da un processo nativo (per esempio Rust con wgpu) senza cambiare il protocollo.</p>
+</section>
+
+<section id="processi">
+  <div class="head"><span class="eyebrow">21 · Processi e confini</span><span class="decision fixed">Deciso</span><h2>Chi fa cosa, e chi non può toccare cosa</h2></div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Processo</th><th>Responsabilità</th><th>Non fa mai</th></tr></thead>
+    <tbody>
+      <tr><td>Engine (processo principale)</td><td>Stato dello show, comandi, regole, gestione moduli, server HTTP e WebSocket, abbinamento postazioni</td><td>Disegnare interfaccia di regia</td></tr>
+      <tr><td>Output renderer (una finestra per uscita display)</td><td>Disegnare il Feed assegnato a 60 fps, transizioni, blackout</td><td>Prendere decisioni: esegue solo lo stato ricevuto</td></tr>
+      <tr><td>Client (postazione)</td><td>Interfaccia, modalità, pannelli dei moduli in iframe isolati</td><td>Accedere alle uscite se non tramite comandi al motore</td></tr>
+      <tr><td>Plugin host (un processo per modulo)</td><td>Eseguire il codice del modulo con i permessi dichiarati</td><td>Accedere al disco o alla rete oltre i permessi, chiamare il motore fuori dal protocollo</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul class="plain">
+    <li>Il motore è l'unica fonte di verità. Ogni cambiamento passa da un comando, viene validato, applicato, e distribuito come patch a tutti.</li>
+    <li>I renderer delle uscite continuano a mostrare l'ultimo stato valido anche se il processo di un modulo o una postazione cade.</li>
+    <li>I frame video tra processi non passano dal protocollo JSON: sullo stesso PC si usa memoria condivisa, in rete NDI tramite il modulo dedicato.</li>
+    <li>I moduli TypeScript girano in processi Node separati avviati con il modello di permessi di Node; i moduli nativi sono eseguibili che parlano lo stesso protocollo su stdio.</li>
+  </ul>
+</section>
+
+<section id="dati">
+  <div class="head"><span class="eyebrow">22 · Modello dati</span><span class="decision">Proposta</span><h2>Lo show come struttura dati</h2></div>
+  <p>Tipi di riferimento, da tenere in <code>@cuelith/protocol</code> dentro cuelith-sdk. Gli identificatori sono ULID; le coordinate delle scene sono normalizzate tra 0 e 1.</p>
+<pre><span class="cm">// ---------- Show (file .cuelith, JSON con "schema": 1) ----------</span>
+<span class="k5">interface</span> Show {
+  schema: 1; id: Id; name: string;
+  playlist: PlaylistEntry[];
+  items: Record&lt;Id, Item&gt;;
+  sources: Record&lt;Id, Source&gt;;
+  looks: Record&lt;Id, Look&gt;;
+  scenes: Record&lt;Id, Scene&gt;;
+  outputs: Record&lt;Id, OutputConfig&gt;;
+  rules: Rule[];
+  plugins: Record&lt;PluginId, string&gt;;   <span class="cm">// moduli richiesti e versione minima</span>
+}
+<span class="k5">interface</span> PlaylistEntry { id: Id; itemId: Id; audience?: "all" | "room" | "stream"; }
+
+<span class="cm">// ---------- Contenuto ----------</span>
+<span class="k5">interface</span> Item {
+  id: Id; type: string;          <span class="cm">// "core.text" | "core.media" | "cuelith.bible.passage" …</span>
+  title: string; slides: Slide[];
+  arrangement?: string[];        <span class="cm">// ordine dei gruppi, es. ["S1","RIT","S2","RIT"]</span>
+  meta: Record&lt;string, unknown&gt;;
+}
+<span class="k5">interface</span> Slide {
+  id: Id; group?: string;
+  fields: Record&lt;string, Field&gt;;  <span class="cm">// chiavi standard: text, chords, notes, reference</span>
+  media?: MediaRef; background?: MediaRef;
+}
+<span class="k5">type</span> Field =
+  | { kind: "text"; value: string }
+  | { kind: "chords"; value: string }     <span class="cm">// formato ChordPro</span>
+  | { kind: "notes"; value: string }
+  | { kind: "reference"; value: string };
+
+<span class="cm">// ---------- Immagine ----------</span>
+<span class="k5">interface</span> Source {
+  id: Id; type: string;          <span class="cm">// "core.presentation" | "core.media" | "core.image" | "cuelith.capture.device" …</span>
+  provider: "core" | PluginId;
+  params: Record&lt;string, unknown&gt;;
+}
+<span class="k5">type</span> LayerId = "background" | "content" | "lowerThird" | "message" | "logo";
+<span class="k5">interface</span> Look {
+  id: Id; name: string;
+  sourceType: string;            <span class="cm">// a quale tipo di sorgente si applica</span>
+  fields: string[];              <span class="cm">// campi visibili, es. ["text","chords"]</span>
+  layers: LayerId[];             <span class="cm">// layer visibili, es. senza "background" per il palco</span>
+  template: "core.fullscreen" | "core.lowerThird" | "core.stage" | string;
+  style: Record&lt;string, unknown&gt;; <span class="cm">// font, colori, margini, allineamento</span>
+}
+<span class="k5">interface</span> Scene { id: Id; name: string; elements: SceneElement[]; }
+<span class="k5">interface</span> SceneElement {
+  id: Id; sourceId: Id; lookId?: Id;
+  rect: { x: number; y: number; w: number; h: number };   <span class="cm">// 0..1</span>
+  crop?: { t: number; r: number; b: number; l: number };
+  opacity: number; z: number; visible: boolean;
+}
+
+<span class="cm">// ---------- Uscite ----------</span>
+<span class="k5">type</span> Feed =
+  | { type: "scene"; sceneId: Id }
+  | { type: "source"; sourceId: Id; lookId?: Id }
+  | { type: "mirror"; outputId: Id };
+<span class="k5">interface</span> OutputConfig {
+  id: Id; name: string;
+  kind: "display" | "ndi" | "stream" | "record" | "virtual";
+  provider: "core" | PluginId;    <span class="cm">// display = core, gli altri = moduli</span>
+  target: Record&lt;string, unknown&gt;; <span class="cm">// es. { displayId } oppure { url, key }</span>
+  format: { width: number; height: number; fps: number };
+  feed: Feed; owner?: RoleId;
+}
+
+<span class="cm">// ---------- Stato live (solo in memoria, mai nel file) ----------</span>
+<span class="k5">interface</span> LiveState {
+  rev: number;                   <span class="cm">// cresce a ogni patch</span>
+  cursor: { entryId?: Id; slideIndex: number };
+  preview: { entryId?: Id; slideIndex: number };
+  layers: Record&lt;LayerId, { visible: boolean; itemId?: Id; slideIndex?: number }&gt;;
+  outputs: Record&lt;Id, { blackout: boolean; freeze: boolean; override?: Feed; status: "ok" | "error"; error?: string }&gt;;
+  activeScene: Record&lt;Id, Id&gt;;   <span class="cm">// outputId → sceneId per le uscite con feed "scene"</span>
+  clients: ClientInfo[]; plugins: PluginStatus[];
+}
+
+<span class="cm">// ---------- Automazione ----------</span>
+<span class="k5">interface</span> Rule { id: Id; enabled: boolean; when: { event: string; match?: Record&lt;string, unknown&gt; }; then: Command[]; }
+<span class="k5">interface</span> Command { method: string; params?: Record&lt;string, unknown&gt;; }</pre>
+</section>
+
+<section id="protocollo">
+  <div class="head"><span class="eyebrow">23 · Protocollo</span><span class="decision">Proposta</span><h2>Un solo protocollo per postazioni e moduli</h2></div>
+  <ul class="plain">
+    <li><b>Trasporto:</b> WebSocket su <code>ws://&lt;motore&gt;:7420/rpc</code> per le postazioni; stdio a righe JSON per i moduli. Formato JSON-RPC 2.0.</li>
+    <li><b>Abbinamento:</b> la postazione chiede <code>session.pair</code>, il motore mostra un codice di 6 cifre, l'utente lo inserisce, il motore restituisce un token con un ruolo. Token revocabili dal motore.</li>
+    <li><b>Stato:</b> <code>state.subscribe</code> restituisce un'istantanea con <code>rev</code>; poi arrivano notifiche <code>state.patch</code> con patch RFC 6902 e <code>rev</code> crescente. Se un client perde una <code>rev</code>, richiede una nuova istantanea.</li>
+    <li><b>Comandi:</b> sempre come richieste con risposta. Il motore controlla ruolo e proprietà prima di applicarli.</li>
+    <li><b>Versione:</b> <code>session.hello</code> scambia la versione del protocollo; versioni maggiori diverse vengono rifiutate con un messaggio chiaro.</li>
+  </ul>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Metodo</th><th>Parametri</th><th>Effetto</th></tr></thead>
+    <tbody>
+      <tr><td><code>cue.next</code> · <code>cue.prev</code></td><td>—</td><td>Slide successiva o precedente in programma</td></tr>
+      <tr><td><code>cue.goto</code></td><td>entryId, slideIndex</td><td>Manda una slide precisa in programma</td></tr>
+      <tr><td><code>preview.set</code></td><td>entryId, slideIndex</td><td>Mette una slide in anteprima</td></tr>
+      <tr><td><code>layer.clear</code></td><td>layer</td><td>Pulisce un layer della presentazione</td></tr>
+      <tr><td><code>output.setFeed</code></td><td>outputId, feed</td><td>Cambia cosa riceve un'uscita</td></tr>
+      <tr><td><code>output.blackout</code> · <code>output.freeze</code></td><td>outputId, on</td><td>Comandi di sicurezza per singola uscita</td></tr>
+      <tr><td><code>scene.activate</code></td><td>outputId, sceneId, transition?</td><td>Cambia scena su un'uscita</td></tr>
+      <tr><td><code>show.open</code> · <code>show.save</code></td><td>path</td><td>Apre o salva lo show</td></tr>
+      <tr><td><code>plugin.install</code> · <code>plugin.enable</code> · <code>plugin.disable</code></td><td>pluginId, version?</td><td>Gestione moduli a caldo</td></tr>
+      <tr><td><code>message.send</code></td><td>outputId, text</td><td>Messaggio al palco o al relatore</td></tr>
+    </tbody>
+  </table>
+  </div>
+<pre><span class="cm">// Esempio: la postazione manda avanti la slide</span>
+→ { "jsonrpc": "2.0", "id": 42, "method": "cue.next" }
+← { "jsonrpc": "2.0", "id": 42, "result": { "rev": 1288 } }
+← { "jsonrpc": "2.0", "method": "state.patch",
+    "params": { "rev": 1288, "ops": [ { "op": "replace", "path": "/cursor/slideIndex", "value": 3 } ] } }
+
+<span class="cm">// Errore: l'uscita appartiene a un altro ruolo</span>
+← { "jsonrpc": "2.0", "id": 43, "error": { "code": 4090, "message": "L'uscita «Diretta» è controllata dalla regia diretta" } }</pre>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Codice</th><th>Significato</th></tr></thead>
+    <tbody>
+      <tr><td>4010</td><td>Non abbinato o token non valido</td></tr>
+      <tr><td>4030</td><td>Il ruolo non ha il permesso per questo comando</td></tr>
+      <tr><td>4090</td><td>Uscita o layer di proprietà di un altro ruolo</td></tr>
+      <tr><td>4220</td><td>Parametri non validi</td></tr>
+      <tr><td>4260</td><td>Versione del protocollo non compatibile</td></tr>
+      <tr><td>5030</td><td>Modulo richiesto non attivo</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="spec-moduli">
+  <div class="head"><span class="eyebrow">24 · Specifica dei moduli</span><span class="decision">Proposta</span><h2>Manifest completo, ciclo di vita e punti di estensione</h2></div>
+<pre><span class="cm">// cuelith-plugin.json — schema completo con valori di esempio</span>
+{
+  "$schema": "https://cuelith.github.io/cuelith-sdk/schema/plugin-1.json",
+  <span class="k1">"id"</span>: "cuelith.bible",              <span class="cm">// dominio inverso, unico nel registry</span>
+  <span class="k1">"name"</span>: "Bibbia multi-versione",
+  <span class="k1">"version"</span>: "1.4.0",                 <span class="cm">// semver</span>
+  <span class="k1">"publisher"</span>: "Cuelith",
+  <span class="k1">"license"</span>: "Apache-2.0",
+  <span class="k1">"repository"</span>: "https://github.com/Cuelith/plugin-bible",
+  <span class="k1">"family"</span>: "function",               <span class="cm">// function | mode | video | audio | control | integration | locale</span>
+  <span class="k2">"engines"</span>: { "cuelith": "^1.0.0", "protocol": "^1.0.0" },
+  <span class="k3">"runtime"</span>: { "type": "node", "entry": "dist/main.js" },   <span class="cm">// oppure { "type": "native", "bin": { … } } · oppure { "type": "none" } per moduli di soli dati</span>
+  <span class="k3">"ui"</span>: { "entry": "dist/ui/index.html" },               <span class="cm">// pannelli, caricati in iframe isolati</span>
+  <span class="k4">"permissions"</span>: ["storage", "network:api.example.org"],   <span class="cm">// storage | network[:host] | fs:read | fs:write | devices:* | serial | process | addons | native</span>
+  <span class="k1">"dependencies"</span>: {},                  <span class="cm">// es. { "cuelith.lowerthirds": "^2.0.0" }</span>
+  <span class="k1">"extends"</span>: [],                        <span class="cm">// es. [{ "point": "cuelith.bible/translations" }]</span>
+  <span class="k1">"provides"</span>: [],                       <span class="cm">// es. ["service:transitions"]</span>
+  <span class="k5">"contributes"</span>: {
+    "modes":      [],                      <span class="cm">// { id, title, shortcut, layout }</span>
+    "panels":     [{ "id": "bible.search", "title": "Bibbia", "icon": "book" }],
+    "itemTypes":  [{ "id": "bible.passage", "title": "Passo biblico" }],
+    "sourceTypes": [],                     <span class="cm">// es. { id: "capture.device" }</span>
+    "outputKinds": [],                     <span class="cm">// es. { id: "stream.rtmp" }</span>
+    "lookTemplates": [],
+    "commands":   [{ "id": "bible.goto", "title": "Vai al riferimento" }],
+    "events":     ["bible.passageShown"],
+    "settings":   [{ "key": "defaultTranslation", "type": "string" }],
+    "extensionPoints": [{ "id": "translations", "schema": "schemas/translation.json" }]
+  }
+}</pre>
+  <div class="grid2">
+    <div class="fam"><h3>Ciclo di vita nel motore</h3><p><code>discovered → installed → enabled → activating → active → deactivating → disabled</code>. Stato <code>crashed</code> con riavvio automatico fino a 3 volte in 60 secondi, poi il modulo resta spento e la postazione mostra l'errore.</p></div>
+    <div class="fam"><h3>Metodi che un modulo implementa</h3><p><code>plugin.activate(context)</code>, <code>plugin.deactivate()</code>, più gli handler dei comandi che dichiara. Il motore chiama, il modulo risponde entro 5 secondi o viene considerato bloccato.</p></div>
+    <div class="fam"><h3>Cosa il modulo può chiedere al motore</h3><p>Leggere lo stato, iscriversi agli eventi, eseguire comandi consentiti dal suo ruolo, registrare sorgenti e uscite, salvare dati nel suo spazio <code>storage</code>.</p></div>
+    <div class="fam"><h3>Spegnere un modulo</h3><p>Il motore rimuove tutti i suoi contributi. Le uscite che usavano una sua sorgente mostrano l'ultimo fotogramma valido e poi il fallback nero, senza fermare le altre.</p></div>
+  </div>
+<pre><span class="cm">// SDK: forma di un modulo TypeScript minimo (pacchetto @cuelith/sdk)</span>
+<span class="k5">import</span> { definePlugin } <span class="k5">from</span> "@cuelith/sdk";
+
+<span class="k5">export default</span> definePlugin({
+  <span class="k5">async</span> activate(ctx) {
+    ctx.commands.register("bible.goto", <span class="k5">async</span> ({ ref }) =&gt; {
+      <span class="k5">const</span> passage = <span class="k5">await</span> lookup(ref, ctx.settings.get("defaultTranslation"));
+      <span class="k5">await</span> ctx.engine.call("preview.setItem", { item: toItem(passage) });
+      ctx.events.emit("bible.passageShown", { ref });
+    });
+  },
+  <span class="k5">async</span> deactivate() {}
+});</pre>
+</section>
+
+<section id="struttura">
+  <div class="head"><span class="eyebrow">25 · Struttura delle repo</span><span class="decision">Proposta</span><h2>Cartelle di partenza</h2></div>
+  <div class="grid2">
+<pre><span class="cm">cuelith-core/</span>
+├─ apps/
+│  ├─ desktop/        <span class="cm">Electron: avvio, finestre</span>
+│  ├─ engine/         <span class="cm">stato, comandi, regole, moduli</span>
+│  ├─ renderer/       <span class="cm">finestre di uscita, compositor</span>
+│  └─ client/         <span class="cm">postazione React</span>
+├─ packages/
+│  ├─ core-looks/     <span class="cm">look fullscreen, lowerThird, stage</span>
+│  └─ test-utils/
+├─ e2e/               <span class="cm">test Playwright</span>
+├─ docs/              <span class="cm">copia di questo documento</span>
+├─ CLAUDE.md
+└─ turbo.json · pnpm-workspace.yaml</pre>
+<pre><span class="cm">cuelith-sdk/</span>
+├─ packages/
+│  ├─ protocol/       <span class="cm">@cuelith/protocol: tipi e metodi</span>
+│  ├─ sdk/            <span class="cm">@cuelith/sdk: definePlugin, ctx</span>
+│  ├─ ui/             <span class="cm">@cuelith/ui: componenti e colori</span>
+│  └─ cli/            <span class="cm">cuelith-plugin: new, dev, pack</span>
+├─ schema/            <span class="cm">plugin-1.json, show-1.json</span>
+└─ CLAUDE.md
+
+<span class="cm">plugin-&lt;nome&gt;/</span>   <span class="cm">(da plugin-template)</span>
+├─ src/main.ts · src/ui/
+├─ cuelith-plugin.json
+├─ .github/workflows/release.yml
+└─ CLAUDE.md</pre>
+  </div>
+</section>
+
+<section id="registry">
+  <div class="head"><span class="eyebrow">26 · Registry e rilasci</span><span class="decision">Proposta</span><h2>Un indice su GitHub, a costo zero</h2></div>
+  <p>cuelith-registry contiene un file per modulo. Una GitHub Action valida ogni pull request e pubblica un <code>index.json</code> unico su GitHub Pages. Il contenitore scarica l'indice, mostra i moduli compatibili e scarica i pacchetti dalle GitHub Releases della repo del modulo.</p>
+<pre><span class="cm">// cuelith-registry/plugins/cuelith.bible.json</span>
+{
+  "id": "cuelith.bible",
+  "repository": "https://github.com/Cuelith/plugin-bible",
+  "verified": true,
+  "versions": [
+    {
+      "version": "1.4.0",
+      "engines": { "cuelith": "^1.0.0" },
+      "url": "https://github.com/Cuelith/plugin-bible/releases/download/v1.4.0/cuelith.bible-1.4.0.cpkg",
+      "sha256": "…",
+      "signature": "…",
+      "permissions": ["storage", "network"]
+    }
+  ]
+}</pre>
+  <ul class="plain">
+    <li>Il pacchetto <code>.cpkg</code> è uno zip con manifest, codice compilato e interfaccia.</li>
+    <li>La CI del registry rifiuta: manifest non valido, id duplicato, hash non corrispondente, permessi diversi da quelli del manifest.</li>
+    <li>I moduli installati vanno nella cartella dati dell'utente, uno per cartella con la sua versione, così un aggiornamento fallito torna alla versione precedente.</li>
+  </ul>
+</section>
+
+<section id="sicurezza">
+  <div class="head"><span class="eyebrow">27 · Sicurezza e affidabilità</span><span class="decision fixed">Deciso</span><h2>Regole che non si negoziano</h2></div>
+  <div class="grid2">
+    <div class="fam"><h3>Le uscite non cadono</h3><p>Crash di moduli e postazioni non interrompono i renderer. Test automatico: uccidere un modulo durante la proiezione non deve far perdere nessun fotogramma all'uscita.</p></div>
+    <div class="fam"><h3>Permessi minimi</h3><p>Un modulo vede solo ciò che il manifest dichiara e l'utente approva. Nuovi permessi in un aggiornamento richiedono una nuova approvazione.</p></div>
+    <div class="fam"><h3>Rete locale protetta</h3><p>Nessun comando senza abbinamento. Token per postazione, revocabili. Il motore ascolta solo sulla rete scelta dall'utente.</p></div>
+    <div class="fam"><h3>Integrità dei pacchetti</h3><p>Hash SHA-256 e firma verificati prima di installare. Un modulo non verificato mostra un avviso chiaro.</p></div>
+    <div class="fam"><h3>Salvataggi sicuri</h3><p>Lo show si salva su file temporaneo e poi si rinomina; copie automatiche ogni 2 minuti durante l'evento.</p></div>
+    <div class="fam"><h3>Segreti</h3><p>Chiavi di streaming e password nel portachiavi del sistema operativo, mai dentro il file dello show.</p></div>
+  </div>
+</section>
+
+<section id="mvp">
+  <div class="head"><span class="eyebrow">28 · Criteri di completamento</span><span class="decision fixed">Deciso</span><h2>Quando una fase è davvero finita</h2></div>
+  <h3>Fase 0 · Fondamenta (cuelith-core, cuelith-sdk, plugin-template)</h3>
+  <ul class="check">
+    <li class="done"><span>Il motore si avvia, apre una postazione e una finestra di uscita a schermo intero sul monitor scelto.<small>Fatto · prova: station.spec · outputs.spec</small></span></li>
+    <li class="done"><span>Si crea un elemento di testo con più slide, lo si mette in scaletta, lo si manda in anteprima e in programma, con dissolvenza.<small>Fatto · prova: show.spec</small></span></li>
+    <li class="done"><span>Due uscite display mostrano la stessa slide con look diversi: Sala (sfondo e testo) e Palco (testo, prossima slide, orologio).<small>Fatto · prova: outputs.spec</small></span></li>
+    <li class="done"><span>Blackout e freeze funzionano su una singola uscita senza toccare le altre.<small>Fatto · prova: outputs.spec</small></span></li>
+    <li class="done"><span>Lo show si salva e si riapre da un file <code>.cuelith</code> valido secondo lo schema.<small>Fatto · prova: files.spec</small></span></li>
+    <li class="done"><span>Una seconda postazione da browser in rete locale si abbina con codice e comanda il motore; lo stato resta sincronizzato.<small>Fatto · prova: network.spec · decisione 0009</small></span></li>
+    <li class="done"><span>Il modulo di esempio «hello-panel» si installa da cartella locale, aggiunge un pannello e un comando, si spegne e si riaccende senza fermare le uscite.<small>Fatto · prova: processes.spec · decisione 0007</small></span></li>
+    <li class="done"><span>Test automatico: il processo del modulo viene terminato durante la proiezione e l'uscita non perde fotogrammi.<small>Fatto · prova: processes.spec</small></span></li>
+  </ul>
+  <p class="note">Fase 0 completata il 2026-10-01: ogni criterio ha una prova automatica che gira a ogni modifica (cartella <code>e2e/tests</code> di cuelith-core). In più, fuori dai criteri: librerie, modulo Canti, marketplace, installatori e aggiornamenti, contatore delle risorse, sfondi immagine.</p>
+  <h3 style="margin-top:14px">Fase 1 · Culto con diretta</h3>
+  <ul class="check">
+    <li>plugin-mode-culto: libreria canti con gruppi e arrangiamenti, modalità Culto come nei mockup.</li>
+    <li>plugin-bible, plugin-timer, look Palco con accordi.</li>
+    <li>plugin-capture: una camera o scheda di cattura come sorgente.</li>
+    <li>Scene nel nucleo: camera più presentazione come fascia più logo.</li>
+    <li>plugin-stream: diretta RTMP della scena, mentre il proiettore riceve la sola presentazione.</li>
+    <li>Una persona sola gestisce proiezione e diretta dalla modalità Broadcast o Culto.</li>
+  </ul>
+</section>
+
+<section id="aperte">
+  <div class="head"><span class="eyebrow">29 · Decisioni prese</span><h2>Come sono state chiuse le decisioni aperte</h2></div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Tema</th><th>Decisione</th><th>Dove</th></tr></thead>
+    <tbody>
+      <tr><td>Nome e organizzazione</td><td>Cuelith, organizzazione GitHub <code>Cuelith</code></td><td>piano della Fase 0</td></tr>
+      <tr><td>Licenza del nucleo</td><td>Apache 2.0, per sempre</td><td>decisione 0004</td></tr>
+      <tr><td>Moduli a pagamento</td><td>Oggi tutto gratuito; architettura pronta per il futuro</td><td>decisioni 0004 e 0008</td></tr>
+      <tr><td>Stack</td><td>Quello del capitolo 20, con Electron</td><td>piano della Fase 0</td></tr>
+      <tr><td>Lingue</td><td>Sono moduli (famiglia <code>locale</code>); italiano preinstallato</td><td>piano della Fase 0</td></tr>
+      <tr><td>Moduli di soli dati</td><td><code>runtime: none</code>: nessun processo</td><td>piano della Fase 0</td></tr>
+      <tr><td>SDK NDI e Dante</td><td>Moduli nativi separati; licenze da leggere prima</td><td>ancora aperta (Fase 1–2)</td></tr>
+      <tr><td>Testi protetti</td><td>Integrazione come modulo</td><td>ancora aperta</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">Le decisioni complete sono nella cartella <a href="../decisioni/">decisioni</a>: in caso di conflitto con questo documento vale la decisione più recente.</p>
+</section>
+
+<section id="roadmap">
+  <div class="head"><span class="eyebrow">30 · Roadmap</span><h2>Prima il nucleo, poi l'ecosistema</h2></div>
+  <div class="road">
+    <div class="ph" style="--c:var(--live-soft)"><span class="n">Fase 0</span><h3>Fondamenta</h3><p>Motore, postazione, uscite con look, protocollo, SDK v0, template e modulo di esempio</p><span class="when">[periodo]</span></div>
+    <div class="ph" style="--c:var(--cue)"><span class="n">Fase 1</span><h3>Culto con diretta</h3><p>Modalità Culto, Bibbia, Timer, camera, scene, diretta RTMP</p><span class="when">[periodo]</span></div>
+    <div class="ph" style="--c:var(--mod)"><span class="n">Fase 2</span><h3>Ecosistema</h3><p>Registry pubblico, marketplace nel contenitore, firma dei pacchetti, NDI, documentazione</p><span class="when">[periodo]</span></div>
+    <div class="ph" style="--c:var(--stage)"><span class="n">Fase 3</span><h3>Produzione</h3><p>Conferenza, Broadcast avanzato, Concerto · VJ, OSC e MIDI, DMX</p><span class="when">[periodo]</span></div>
+  </div>
+  <p class="muted">Il modulo Bibbia fa da esempio di riferimento per chi scriverà moduli.</p>
+</section>
+
+<footer class="end">
+  <span class="eyebrow">Cuelith</span>
+  <p class="big">Il nucleo prima.<br>Tutto il resto è un modulo.</p>
+  <p class="muted">Fase 0 completata. Prossimo passo: la Fase 1, culto con diretta.</p>
+  <p class="src">Mattia Lazzari · mattialazzari.it</p>
+</footer>
+</main>
+</div>
+
+<script>
+(function(){
+  var boxes = document.querySelectorAll('#toggles .sw');
+  var count = document.getElementById('count');
+  function sync(){
+    var on = {}, n = 0;
+    boxes.forEach(function(b){ on[b.dataset.m] = b.checked; if (b.checked) n++; });
+    document.querySelectorAll('[data-show]').forEach(function(el){ el.hidden = !on[el.dataset.show]; });
+    count.textContent = n === 0 ? 'Nucleo nudo · 0 moduli' : 'Nucleo + ' + n + (n === 1 ? ' modulo' : ' moduli');
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', sync); });
+  sync();
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting && map[e.target.id]) {
+          links.forEach(function(a){ a.classList.remove('on'); });
+          map[e.target.id].classList.add('on');
+        }
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+
+
+</body>
+</html>

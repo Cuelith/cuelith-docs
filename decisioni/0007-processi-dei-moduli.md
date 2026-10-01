@@ -69,7 +69,7 @@ Le famiglie del cap. 12 cadono così:
 | Audio (Dante, ASIO/CoreAudio, FFT, LTC)                     | come il video, più il modello audio che manca (sotto)                                                                                                                                                                                                                | **da decidere (sotto)**            |
 | Sfondi                                                      | vedi sotto                                                                                                                                                                                                                                                           | immagini del nucleo: passo 6c; sfondi dei moduli: **da decidere** |
 
-## Il modello "come OBS": verificato nel documento
+## Il modello "come un mixer video": verificato nel documento
 
 Il documento (cap. 06, 07, 08, 22) prevede quello che chiedi. Lo **stesso elemento usato insieme da più ingressi e più uscite** è proprio la separazione tra:
 
