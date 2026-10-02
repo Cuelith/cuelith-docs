@@ -9,3 +9,8 @@ Documento di progetto di Cuelith (`documento/index.html`) e decisioni numerate (
 - Testi in italiano, chiari anche per chi non è tecnico nelle parti I–IV.
 - Lavoro su `dev`; `main` riceve solo versioni taggate.
 - Rispondi al fondatore sempre in italiano.
+
+## Stato del progetto
+
+`STATO.md` è il primo file da leggere per riprendere il lavoro: cosa è pubblico, cosa è in sospeso, come si rilascia, cosa viene dopo. Va aggiornato alla fine di ogni giornata di lavoro e a ogni rilascio, insieme alla tabella delle decisioni nel `README.md`.
+
