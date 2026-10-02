@@ -17,7 +17,7 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 | Plugin Canti | 0.5.0 | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.1.1 | `plugin-template` |
 | Marketplace | solo Canti 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
-| Sito | v0.1.1 | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
+| Sito | v0.1.2 | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
 
@@ -44,6 +44,7 @@ Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-02 erano
 | **Email del progetto** per le segnalazioni | fondatore | Oggi sicurezza e comportamento rimandano alla pagina riservata di GitHub. Con un indirizzo vero, aggiornare `SECURITY.md` e `CODE_OF_CONDUCT.md` nel repo `.github`. |
 | **Accordo di contribuzione** (firma automatica alla prima pull request) | prima proposta da un account esterno | Mai visto in azione: controllare che il commento dell'automatismo compaia e che la firma finisca nel ramo `cla-signatures`. |
 | **Animazioni del sito** | giudizio del fondatore | Verificate su fotogrammi fermi a tre larghezze, non in movimento. Se qualcosa non convince, si regola in `cuelith-site/src/app.js` (zone d'ingresso e d'uscita) e `styles.css`. |
+| **Scheda di Cuelith sull'hub lzrhive.it** | fondatore, dalla console https://lzrhive.it/admin/ | Il sito di Cuelith ha già il link a lzrhive e a Ko-fi (v0.1.2). La scheda da creare nella console, con testi italiano e inglese e immagine `cuelith-core/brand/lzrhive-card.jpg`, è descritta in [hub-lzrhive.md](hub-lzrhive.md). Se mancano i controlli, il progetto dell'hub vive in `C:\1.Personale\lzrhive.it` (repo ML-lzrhive/lzrhive.it, ramo dev, hub anonimo: mai il nome del fondatore). |
 
 ## Cose fatte ma non ancora provate dal vero
 
