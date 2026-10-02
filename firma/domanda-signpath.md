@@ -13,23 +13,45 @@ L'installatore di Windows non è firmato: chi lo apre vede «PC protetto da Wind
 3. Aspetta la risposta per email: possono volerci giorni o settimane, e possono chiedere chiarimenti. Giramela e preparo la risposta.
 4. Quando accettano, ti danno accesso a SignPath: da lì in poi collego io la firma alla procedura di rilascio. Ogni rilascio andrà approvato a mano da te con un clic.
 
-## Risposte pronte
+## Risposte pronte (campi del modulo, visti il 2026-10-02)
 
-| Domanda | Risposta |
+| Campo | Risposta |
 | --- | --- |
-| Project name | Cuelith |
+| Project Name | Cuelith |
 | Repository URL | https://github.com/Cuelith/cuelith-core |
-| Homepage / download page | https://cuelith.lzrhive.it/en/ |
-| License | Apache-2.0 (OSI approved), for the core and for every component in the installer |
-| Programming language / build | TypeScript, Electron; built with electron-builder by GitHub Actions |
-| Artifact to sign | Windows installer `Cuelith-Setup-<version>.exe` (NSIS, per-user) and the executables inside it |
-| Build system | GitHub Actions, workflow `.github/workflows/release.yml`, started by a version tag on `main` |
-| Release frequency | A few releases per month while in preview |
-| Maintainer | The owner of the Cuelith organisation on GitHub (@MattiaLazzari) |
+| Homepage URL | https://cuelith.lzrhive.it/en/ |
+| Download URL (facoltativo) | https://cuelith.lzrhive.it/en/ |
+| Privacy Policy URL | https://github.com/Cuelith/cuelith-core#privacy |
+| Wikipedia URL | vuoto |
+| Build System | GitHub Actions |
+| Company Name | vuoto |
+| Caselle in fondo | la prima e la terza (obbligatorie); la seconda, le comunicazioni commerciali, no |
 
-**Project description (short)**
+**Tagline**
 
-> Cuelith is free, open-source live projection software for events: it shows texts, lyrics and announcements on a projector, a stage monitor and other screens. It has a small core and a plugin system; plugins run in separate processes with declared permissions.
+> Free, open-source live projection software with a small core and a plugin system.
+
+**Description**
+
+> Cuelith is free, open-source software for live events: it shows texts, lyrics and announcements on a projector, a stage monitor and other screens, and lets the operator control what is on air from one desk. It has a small core and a plugin system; plugins run in separate processes with declared permissions, so a faulty plugin never stops the projection. It runs on Windows and Linux, works offline, and is available in English and Italian.
+
+**Reputation**
+
+> Cuelith is a new project: its first public version was released on 1 October 2026, so it has no download statistics or press coverage yet. What can be verified today:
+>
+> - Development is fully public in the GitHub organisation https://github.com/Cuelith (core, SDK, plugins, registry, docs, website).
+> - Two releases so far (0.1.0 and 0.2.0), built entirely by GitHub Actions from tagged source: https://github.com/Cuelith/cuelith-core/releases
+> - Every commit runs automated checks, including end-to-end tests that drive the packaged app.
+> - Protected branches with mandatory review, two-factor authentication enforced on the organisation, private vulnerability reporting enabled.
+> - Public contributor guide, developer guide, security policy and trademark policy: https://github.com/Cuelith/.github
+> - Code signing policy and privacy statement: https://github.com/Cuelith/cuelith-core#code-signing-policy
+
+## Due punti deboli, detti chiaramente
+
+- **Reputazione**: chiedono prove che il progetto sia largamente usato o fidato. Cuelith è pubblico dal 1° ottobre 2026 e non ha ancora numeri: il testo dice solo ciò che è vero e verificabile. Possono rispondere di ripresentarsi più avanti; in quel caso si rifà la domanda con i download veri.
+- **Download URL**: il modulo dice che quella pagina deve menzionare SignPath Foundation. Non si può scrivere prima dell'accettazione; il campo non è obbligatorio. Se accettano, la frase va aggiunta subito alla sezione Download del sito e al README.
+
+## Se chiedono chiarimenti
 
 **Why we need code signing**
 
@@ -39,13 +61,9 @@ L'installatore di Windows non è firmato: chi lo apre vede «PC protetto da Wind
 
 > Every release is built from a version tag on the `main` branch by the GitHub Actions workflow in the repository, using only the source code of our public repositories (`cuelith-core`, `cuelith-sdk`, `plugin-locale-it`, `plugin-locale-en`) and their open-source dependencies. `main` and `dev` are protected branches: changes from contributors need a pull request, a passing check and the maintainer's approval. The release is created as a draft and is published only when all installers have been built.
 
-**Privacy**
+**Artifact to sign**
 
-> Cuelith has no accounts and collects no data. It contacts the internet only to check for app updates and to read the public list of plugins. The automatic update check can be turned off in the settings. The code signing policy and the privacy statement are in the repository README.
-
-**Code signing policy**
-
-> https://github.com/Cuelith/cuelith-core#code-signing-policy
+> The Windows installer `Cuelith-Setup-<version>.exe` (NSIS, per-user, no administrator rights) and the executables inside it. Licence: Apache-2.0 for the core and for every component in the installer.
 
 ## Cosa ho già preparato
 
