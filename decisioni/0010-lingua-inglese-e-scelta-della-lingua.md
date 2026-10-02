@@ -1,6 +1,6 @@
 # 0010 · Lingua inglese e scelta della lingua
 
-Stato: **Proposto, costruito su `dev`** (2026-10-02). Protocollo 1.13.0. Da confermare dal fondatore: l'inglese incluso nel programma (punto 2) e il rilascio.
+Stato: **Deciso** (2026-10-02, confermato dal fondatore). Protocollo 1.13.0. Rilasciato con Cuelith 0.2.0.
 
 ## Perché
 
@@ -29,8 +29,10 @@ Il sito di Cuelith è in italiano e in inglese. Una pagina inglese con schermate
 
 Nel testo di ogni versione pubblicata una riga di separazione (`---`) divide l'italiano, che viene prima, dall'inglese. Il sito mostra a ogni pagina la sua lingua; se l'inglese manca, mostra l'italiano.
 
-## Da fare al rilascio
+## Rilascio
 
-- Creare il repo `Cuelith/plugin-locale-en` e aggiungerlo alle procedure di CI e di rilascio del nucleo (oggi l'inglese entra nel pacchetto solo se il repo è affiancato).
-- I moduli dichiarano la versione del nucleo con `^0.1.0`, che esclude la 0.2.0: prima di rilasciare la 0.2.0 vanno allargati (`>=0.1.0 <1.0.0`) italiano e Canti, come già fatto per l'inglese.
-- Ordine: sdk (protocollo 1.13) → lingue → Canti 0.5.0 e registry → documentazione → nucleo → sito.
+Uscito con Cuelith 0.2.0 (2026-10-02): protocollo 1.13 (SDK v0.6.0), italiano 0.2.0, inglese 0.1.0 (repo `plugin-locale-en`, incluso nell'installatore), Canti 0.5.0.
+
+Nella stessa versione i «moduli» diventano **plugin** in tutti i testi del programma, nelle due lingue, come sul sito. Nel codice, nel protocollo e in questi documenti il nome tecnico resta modulo.
+
+I plugin dichiarano la versione del programma con un intervallo esplicito (`>=0.1.0 <1.0.0`): per le versioni 0.x l'accento circonflesso (`^0.1.0`) esclude la 0.2.0. Chi aveva Canti 0.4 lo aggiorna dal marketplace.
