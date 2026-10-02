@@ -16,10 +16,16 @@ Documentazione di Cuelith: il documento di progetto e le decisioni prese durante
 | [0007](decisioni/0007-processi-dei-moduli.md) | Processi e permessi dei moduli, moduli di terzi, contatore delle risorse |
 | [0008](decisioni/0008-moduli-a-pagamento.md) | Moduli a pagamento: architettura (da costruire più avanti) |
 | [0009](decisioni/0009-postazioni-in-rete.md) | Postazioni in rete locale |
+| [0010](decisioni/0010-lingua-inglese-e-scelta-della-lingua.md) | Lingua inglese, scelta della lingua, «plugin» nei testi, note di versione in due lingue |
+| [0011](decisioni/0011-contributi-e-tutela.md) | Contributi esterni e tutela del progetto |
 
 ## Stato
 
-**Fase 0 (fondamenta) completata il 2026-10-01**: gli otto criteri del capitolo 28 sono soddisfatti, ognuno con una prova automatica (vedi il capitolo 28 del documento). Prossima: Fase 1, culto con diretta.
+**Per riprendere il lavoro: leggi [STATO.md](STATO.md)**: dove siamo, cosa è in sospeso, cosa viene dopo.
+
+- **Fase 0 (fondamenta) completata il 2026-10-01**: gli otto criteri del capitolo 28 sono soddisfatti, ognuno con una prova automatica.
+- **Cuelith 0.2.0 pubblicato il 2026-10-02**: italiano e inglese, sito online su <https://cuelith.lzrhive.it>.
+- Prossima: **Fase 1**, dopo le due prove tecniche descritte in STATO.md.
 
 ## Dove sta il codice
 
