@@ -1,6 +1,6 @@
 # Stato del progetto e come riprendere
 
-Aggiornato il **2026-10-02**. Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
+Aggiornato il **2026-10-03**. Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
 
 ## In una riga
 
@@ -17,11 +17,11 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 | Plugin Canti | 0.5.0 | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.1.1 | `plugin-template` |
 | Marketplace | solo Canti 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
-| Sito | v0.1.2 | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
+| Sito | v0.1.3 (con Ko-fi, link a lzrhive e dati strutturati per i motori di ricerca) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
 
-Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-02 erano tutti puliti e inviati.
+Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-03 erano tutti puliti e inviati. Anche l'hub personale `lzrhive.it` (cartella `C:\1.Personale\lzrhive.it`, repo `ML-lzrhive/lzrhive.it`) è collegato a questo lavoro: vedi sotto.
 
 ## Regole di lavoro che valgono sempre
 
@@ -44,7 +44,8 @@ Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-02 erano
 | **Email del progetto** per le segnalazioni | fondatore | Oggi sicurezza e comportamento rimandano alla pagina riservata di GitHub. Con un indirizzo vero, aggiornare `SECURITY.md` e `CODE_OF_CONDUCT.md` nel repo `.github`. |
 | **Accordo di contribuzione** (firma automatica alla prima pull request) | prima proposta da un account esterno | Mai visto in azione: controllare che il commento dell'automatismo compaia e che la firma finisca nel ramo `cla-signatures`. |
 | **Animazioni del sito** | giudizio del fondatore | Verificate su fotogrammi fermi a tre larghezze, non in movimento. Se qualcosa non convince, si regola in `cuelith-site/src/app.js` (zone d'ingresso e d'uscita) e `styles.css`. |
-| **Scheda di Cuelith sull'hub lzrhive.it** | fondatore, dalla console https://lzrhive.it/admin/ | Il sito di Cuelith ha già il link a lzrhive e a Ko-fi (v0.1.2). La scheda da creare nella console, con testi italiano e inglese e immagine `cuelith-core/brand/lzrhive-card.jpg`, è descritta in [hub-lzrhive.md](hub-lzrhive.md). Se mancano i controlli, il progetto dell'hub vive in `C:\1.Personale\lzrhive.it` (repo ML-lzrhive/lzrhive.it, ramo dev, hub anonimo: mai il nome del fondatore). |
+| **Scheda di Cuelith sull'hub lzrhive.it** | fondatore, dalla console `https://lzrhive.it/admin/` | Il sito di Cuelith ha già il link a lzrhive e a Ko-fi. La scheda da creare (testi italiano e inglese, immagine `cuelith-core/brand/lzrhive-card.jpg`) è in [hub-lzrhive.md](hub-lzrhive.md). Il fondatore ha segnalato l'errore «file immagine non valido» al caricamento: era un difetto della console (le immagini `blob:` erano bloccate dalla sua politica di sicurezza), corretto e pubblicato su `main` dell'hub il 2026-10-03, provato in un browser vero. Da confermare che ora il caricamento riesca (ricaricare con Ctrl+F5). Il fondatore ha poi detto che la scheda è fatta ("il punto 2 è già fatto"). |
+| **Google Search Console** per `lzrhive.it` | fondatore | Il sito non compare ancora cercando «Cuelith» (online da due giorni, nessun link entrante). Guida data al fondatore: proprietà di tipo Dominio `lzrhive.it`, record TXT `google-site-verification=…` su Cloudflare (DNS), poi invio di `https://cuelith.lzrhive.it/sitemap.xml` e «Richiedi indicizzazione» per `/` e `/en/`. Controllo: la ricerca `site:cuelith.lzrhive.it`. Il sito è tecnicamente a posto (nessun noindex, mappa del sito, canonical, dati strutturati `SoftwareApplication`); ciò che manca è tempo e link. |
 
 ## Cose fatte ma non ancora provate dal vero
 
@@ -83,7 +84,17 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 | Regole per chi sviluppa plugin | repo `.github`: `DEVELOPERS.md`, `CONTRIBUTING.md` |
 | Regole di ogni repo | il suo `CLAUDE.md` |
 
+## Hub lzrhive.it: cosa serve sapere
+
+- L'hub è anonimo: mai il nome del fondatore nei testi, nell'identità Git (`lzrhive` / `ML-lzrhive@users.noreply.github.com`) né nei campi pubblici.
+- Lavoro sul ramo `dev` dell'hub; `main` (pubblicazione automatica su Cloudflare) solo quando il fondatore dà il via. Il 2026-10-03 il via è stato dato per la correzione del caricamento immagini.
+- La console sta dietro Cloudflare Access (codice via email) e poi password + verifica in due passaggi: non è raggiungibile da qui.
+- Il Ko-fi del fondatore è `https://ko-fi.com/mlhive`, già impostato nell'hub e usato dal sito di Cuelith. Gli unici indirizzi esterni ammessi nel sito di Cuelith sono Ko-fi e `lzrhive.it` (controllo in `cuelith-site/test/site.test.mjs`).
+
 ## Trappole scoperte di recente
+
+- **La politica di sicurezza della console dell'hub ammette immagini solo da sé e da `data:`**: niente `blob:`. Per leggere un file scelto dall'utente si usa `createImageBitmap` o `data:`.
+- Nelle prove, un comando concatenato in PowerShell non si ferma da solo se un passo fallisce: controllare l'esito dei test prima di pubblicare.
 
 - **Pannello vuoto per 10 secondi** alla prima apertura di un plugin appena installato: era la prima lettura dei file nuovi trattenuta dai controlli del sistema, non la poca memoria. Risolto con la lettura anticipata (`apps/engine/src/modules/warm.ts`).
 - **Chi riceve dati dal motore non li valida in modo rigido**: un campo nuovo nello stato (com'è stato `live.lang`) non deve rompere pannelli e plugin costruiti prima.
