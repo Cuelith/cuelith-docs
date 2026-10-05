@@ -1,6 +1,6 @@
 # Stato del progetto e come riprendere
 
-Aggiornato il **2026-10-05** (sera). Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
+Aggiornato il **2026-10-05** (notte). Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
 
 ## In una riga
 
@@ -11,7 +11,7 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 | Cosa | Versione | Dove |
 | --- | --- | --- |
 | Programma (nucleo) | **0.2.5** (prima con la GPL) | repo `cuelith-core`, release con installatore Windows e AppImage Linux. Le release 0.1.0 e 0.2.0 sono state **eliminate** il 2026-10-05 (restano i tag Git) |
-| Protocollo / SDK | 1.13.0 / tag v0.6.0 | `cuelith-sdk` |
+| Protocollo / SDK | 1.13.0 / tag v0.6.0 pubblicati; **1.14.0 su `dev`**, non rilasciato (registry con plugin a pagamento, decisione 0013) | `cuelith-sdk` |
 | Lingua italiana | 0.2.1 | `plugin-locale-it` (inclusa nell'installatore) |
 | Lingua inglese | 0.1.1 | `plugin-locale-en` (inclusa nell'installatore) |
 | Plugin Canti | 0.5.1 (GPL; le 0.5.0 e 0.4.2 Apache sono ancora scaricabili dal repo del plugin) | `plugin-songs`, nel marketplace |
@@ -51,7 +51,7 @@ Le versioni già pubblicate (nucleo 0.2.0, Canti 0.5.0, lingue) restano Apache: 
 | --- | --- | --- |
 | **Mail a SignPath per il cambio di licenza: ora la release 0.2.5 esiste** | fondatore | Aggiornare il testo in [firma/email-signpath-licenza.md](firma/email-signpath-licenza.md) citando la 0.2.5 come prima release da firmare, poi inviarlo. |
 | **Parere legale** su eccezione per i plugin e su obblighi da «piattaforma online» (DSA) | fondatore | Prima di qualsiasi plugin a pagamento nel marketplace, non prima. |
-| **Marketplace a pagamento (decisione 0013)** | fondatore + Claude | Proposta già discussa nella conversazione del 2026-10-05, da riprendere dopo la messa a posto di policy e tutela: nessun account, nessun database; Git come catalogo (`cuelith-registry`) e proposta dal sito con approvazione in un angolo protetto (Cloudflare Access) che unisce la pull request; venditore esterno (negozio dello sviluppatore, «merchant of record»); licenza come file firmato da un piccolo servizio senza stato (Cloudflare Workers) e legato al computer, con i posti tenuti dal negozio; zero commissioni (il fondatore non tocca denaro). Sostituisce le parti «Account» e «Server licenze» della 0008. Fasi: B catalogo (campi `access`, `pricing`, `purchaseUrl`, `licensing` e pagina Marketplace nel sito e nell'app), C proposta dal web e approvazione, D licenze (notaio, chiavi del dispositivo, `ctx.license`). |
+| **Marketplace a pagamento (decisione 0013)**: fase 1 fatta su `dev`, fasi 2-5 da fare | fondatore + Claude | Leggere [la decisione 0013](decisioni/0013-marketplace-a-pagamento-senza-account.md) (architettura, fasi, cosa non si può impedire). **Fatto (fase 1)**: schema del registry e dell'SDK (protocollo 1.14: `access`, `price`, `checkoutUrl`, `licensing`, `authorKey`, firma Ed25519 dei pacchetti), controlli e due indici nel registry (`index.json` solo gratuiti e senza campi nuovi, `index-2.json` tutti), test, testi nelle due lingue. **Da fare**: 2) pagine `/marketplace` e `/marketplace/submit` nel sito, con avviso sull'affiliazione; 3) Pages Functions (proposta con KV e Turnstile, pannello con Access, pull request al registry, notaio dei permessi); 4) nucleo (acquisto, licenza, chiavi del computer con `safeStorage`, rinnovo silenzioso, `ctx.license`); 5) `MARKETPLACE_SETUP.md`. **Prima di aprire ai primi autori**: commercialista per la commissione di affiliazione (volontaria, dipende dall'autore; il fondatore l'ha confermato), parere legale, condizioni per gli autori, un negozio di prova presso il fornitore. **Nulla di questo è stato rilasciato né portato su `main`**: lo schema 1.14 e il registry nuovo stanno solo su `dev` finché le fasi non sono provate. |
 | **Firma dell'installatore Windows**: domanda inviata a SignPath Foundation il 2026-10-02 | risposta di SignPath via email al fondatore | Se chiedono chiarimenti: risposte pronte in [firma/domanda-signpath.md](firma/domanda-signpath.md). Se accettano: aggiungere al README di `cuelith-core` e alla sezione Download del sito la frase «Free code signing provided by SignPath.io, certificate by SignPath Foundation»; collegare la firma a `release.yml`; ogni rilascio va poi approvato a mano. Se rifiutano per mancanza di utenti: ripresentare tra qualche mese con i download veri. |
 | **Marchio «Cuelith»**: rimandato per il costo (149–183 € in Italia) | fondatore | Depositare quando il progetto ha utenti o prima del primo incasso. Marchio denominativo, classi 9 e 42, portale UIBM. Ricerca fatta: nessun «Cuelith»; unico simile in UE «CueLight» (classi 11, 16, 41, non software). Il fondatore ha detto che il nome «al massimo può essere ripensato in futuro». |
 | **Email del progetto** per le segnalazioni | fondatore | Oggi sicurezza e comportamento rimandano alla pagina riservata di GitHub. Con un indirizzo vero, aggiornare `SECURITY.md` e `CODE_OF_CONDUCT.md` nel repo `.github`. |
@@ -84,7 +84,7 @@ La Fase 1 del documento (cap. 30) porta camera, scene, sottopancia e streaming. 
 
 Poi, nell'ordine della [decisione 0001](decisioni/0001-librerie-canti-accordi.md): media del nucleo (immagini, video, audio con scelta dell'uscita) → Accordi → Bibbia → disposizione Culto → compositing delle scene.
 
-Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la prossima è la **0013**) e confermata dal fondatore se cambia ciò che vede l'utente.
+Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la prossima è la **0014**) e confermata dal fondatore se cambia ciò che vede l'utente.
 
 ## Dove guardare per ogni cosa
 
@@ -94,7 +94,8 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 | Lingue, scelta della lingua, «plugin», note in due lingue | [decisione 0010](decisioni/0010-lingua-inglese-e-scelta-della-lingua.md) |
 | Contributi esterni, protezioni, accordo di contribuzione, nome e logo | [decisione 0011](decisioni/0011-contributi-e-tutela.md) |
 | Licenza GPL, SDK Apache, eccezione per i plugin, marchio | [decisione 0012](decisioni/0012-licenza-gpl-e-eccezione-plugin.md) |
-| Plugin a pagamento (solo architettura, niente di costruito; **da riprogettare** senza account né database, vedi 0012) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
+| Marketplace a pagamento: architettura, fasi, commissione, cosa è vero e cosa no | [decisione 0013](decisioni/0013-marketplace-a-pagamento-senza-account.md) |
+| Plugin a pagamento, prima proposta (le parti Account, Server licenze, Negozio sono **superate dalla 0013**) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
 | Regole del sito (tono, schermate, animazioni, inglese tutto in inglese) | `cuelith-site/CLAUDE.md` e `README.md` |
 | Regole per chi sviluppa plugin | repo `.github`: `DEVELOPERS.md`, `CONTRIBUTING.md` |
 | Regole di ogni repo | il suo `CLAUDE.md` |
@@ -108,6 +109,10 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 
 ## Trappole scoperte di recente
 
+- **I programmi installati rifiutano un indice del registry con campi che non conoscono** (schema stretto): `index.json` (schema 1) non deve mai ricevere campi nuovi né plugin a pagamento; per quelli c'è `index-2.json`. In `build-index.mjs` si scrive l'oggetto originale, non quello restituito da `parse()` (che aggiunge `access`).
+- **La cache di Turbo non si accorge dei cambi dell'SDK** (sta fuori dal repo del nucleo, collegato con `link:`): dopo ogni modifica all'SDK si controlla il nucleo con `pnpm exec turbo run typecheck lint test --force`. Il 2026-10-05 la cache nascondeva un errore di tipi.
+- **Negli script scritti al volo (heredoc con Node) i `\n` e le barre inverse delle regex si perdono o diventano a capo veri**: per testi con escape si usa l'editor, o uno script salvato su file, e si rilegge il risultato.
+- **`z.url({ hostname })` non guarda il nome utente**: `https://utente:pw@negozio.example/` passa; l'indirizzo di acquisto si controlla anche con una regola sul `@` prima del primo `/`.
 - **Il feed `releases.atom` di GitHub elenca anche i tag senza release** (titolo = nome del tag). Dopo aver eliminato una release il suo tag resta e la voce resta nel feed: il sito (`functions/_lib/sources.js`) le scarta guardando il titolo, che nelle nostre release è «Cuelith X.Y.Z». Se cambia il modo di titolare le release, cambia anche quel controllo.
 - **Eliminare una release non ritira la licenza data**: chi ha già scaricato 0.1.0 o 0.2.0 le ha con Apache. Vale solo per la distribuzione nostra.
 - **Le vecchie distribuzioni di Cloudflare Pages** (4 di produzione e 1 di anteprima, con la licenza Apache, raggiungibili da `<id>.cuelith.pages.dev`) sono state lasciate: il fondatore ha detto che non sono attive. La cancellazione con `wrangler pages deployment delete` fu bloccata dai permessi; si può fare dalla dashboard.
