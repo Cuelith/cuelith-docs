@@ -6,7 +6,7 @@ Per chi: il fondatore, che invia la mail al supporto di SignPath Foundation; chi
 
 1. Scrivi dall'indirizzo email con cui hai presentato la domanda (SignPath lega la richiesta a quell'indirizzo).
 2. Indirizzo: quello di supporto che compare nella loro mail di conferma, oppure `support@signpath.org` (controlla sul sito <https://signpath.org> prima di inviare).
-3. **Invia dopo** che i repo con la GPL sono pubblicati su GitHub (il ramo `main` di `cuelith-core` mostra la licenza GPL-3.0 solo dopo il rilascio successivo alla 0.2.0; se vuoi scrivere prima, lascia la frase tra parentesi quadre). Il link alla pagina della licenza sul ramo `dev` va bene fin da subito.
+3. **Puoi inviarla subito**: il ramo predefinito del repo è `dev` e GitHub mostra già «GPL-3.0» nella pagina di `cuelith-core` (verificato il 2026-10-05). `main` resterà Apache fino alla prima release con la GPL.
 
 ## Testo
 
