@@ -1,22 +1,22 @@
 # Stato del progetto e come riprendere
 
-Aggiornato il **2026-10-05**. Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
+Aggiornato il **2026-10-05** (sera). Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
 
 ## In una riga
 
-Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è online su `cuelith.lzrhive.it`, i repo sono pronti per contributi esterni. **Dal 2026-10-05 il nucleo è in transizione da Apache 2.0 a GPL 3.0 con eccezione per i plugin** (decisione 0012): il lavoro è su `dev`, vale dalla prossima release. Prossimo lavoro: **Fase 1** (due prove tecniche) e la decisione 0013 sul marketplace.
+Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è online su `cuelith.lzrhive.it`, i repo sono pronti per contributi esterni. **Dal 2026-10-05 il nucleo è GPL 3.0 con eccezione per i plugin** (decisione 0012): la prima release con la nuova licenza è la **0.2.5**, pubblica. Prossimo lavoro: **Fase 1** (due prove tecniche) e la decisione 0013 sul marketplace.
 
 ## Cosa è pubblico oggi
 
 | Cosa | Versione | Dove |
 | --- | --- | --- |
-| Programma (nucleo) | **0.2.0** | repo `cuelith-core`, release con installatore Windows e AppImage Linux |
+| Programma (nucleo) | **0.2.5** (prima con la GPL) | repo `cuelith-core`, release con installatore Windows e AppImage Linux. Le release 0.1.0 e 0.2.0 sono state **eliminate** il 2026-10-05 (restano i tag Git) |
 | Protocollo / SDK | 1.13.0 / tag v0.6.0 | `cuelith-sdk` |
-| Lingua italiana | 0.2.0 | `plugin-locale-it` (inclusa nell'installatore) |
-| Lingua inglese | 0.1.0 | `plugin-locale-en` (inclusa nell'installatore) |
-| Plugin Canti | 0.5.0 | `plugin-songs`, nel marketplace |
+| Lingua italiana | 0.2.1 | `plugin-locale-it` (inclusa nell'installatore) |
+| Lingua inglese | 0.1.1 | `plugin-locale-en` (inclusa nell'installatore) |
+| Plugin Canti | 0.5.1 (GPL; le 0.5.0 e 0.4.2 Apache sono ancora scaricabili dal repo del plugin) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.1.1 | `plugin-template` |
-| Marketplace | solo Canti 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
+| Marketplace | Canti 0.5.1, 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
 | Sito | v0.1.3 (con Ko-fi, link a lzrhive e dati strutturati per i motori di ricerca) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
@@ -49,8 +49,7 @@ Le versioni già pubblicate (nucleo 0.2.0, Canti 0.5.0, lingue) restano Apache: 
 
 | Cosa | Chi | Cosa fare quando si sblocca |
 | --- | --- | --- |
-| **Mail a SignPath per il cambio di licenza** | fondatore | Testo pronto in [firma/email-signpath-licenza.md](firma/email-signpath-licenza.md): da inviare appena la GPL è su `main` (o prima, se vuole avvisarli subito). |
-| **Primo rilascio con la GPL** (nucleo 0.3.0 o simile, e nuove versioni di Canti e delle due lingue) | fondatore + Claude | Il codice è pronto su `dev` ma **nulla è stato rilasciato né portato su `main`**. Al rilascio: note di versione che dicono il cambio di licenza (in `versioni/X.Y.Z.md`), plugin con `license` GPL nel manifest e nel registry, controllare che l'installatore contenga `resources/legal/` (LICENSE, NOTICE, PLUGIN-EXCEPTION.md), aggiornare il README e il sito se la lista cambia. |
+| **Mail a SignPath per il cambio di licenza: ora la release 0.2.5 esiste** | fondatore | Aggiornare il testo in [firma/email-signpath-licenza.md](firma/email-signpath-licenza.md) citando la 0.2.5 come prima release da firmare, poi inviarlo. |
 | **Parere legale** su eccezione per i plugin e su obblighi da «piattaforma online» (DSA) | fondatore | Prima di qualsiasi plugin a pagamento nel marketplace, non prima. |
 | **Marketplace a pagamento (decisione 0013)** | fondatore + Claude | Proposta già discussa nella conversazione del 2026-10-05, da riprendere dopo la messa a posto di policy e tutela: nessun account, nessun database; Git come catalogo (`cuelith-registry`) e proposta dal sito con approvazione in un angolo protetto (Cloudflare Access) che unisce la pull request; venditore esterno (negozio dello sviluppatore, «merchant of record»); licenza come file firmato da un piccolo servizio senza stato (Cloudflare Workers) e legato al computer, con i posti tenuti dal negozio; zero commissioni (il fondatore non tocca denaro). Sostituisce le parti «Account» e «Server licenze» della 0008. Fasi: B catalogo (campi `access`, `pricing`, `purchaseUrl`, `licensing` e pagina Marketplace nel sito e nell'app), C proposta dal web e approvazione, D licenze (notaio, chiavi del dispositivo, `ctx.license`). |
 | **Firma dell'installatore Windows**: domanda inviata a SignPath Foundation il 2026-10-02 | risposta di SignPath via email al fondatore | Se chiedono chiarimenti: risposte pronte in [firma/domanda-signpath.md](firma/domanda-signpath.md). Se accettano: aggiungere al README di `cuelith-core` e alla sezione Download del sito la frase «Free code signing provided by SignPath.io, certificate by SignPath Foundation»; collegare la firma a `release.yml`; ogni rilascio va poi approvato a mano. Se rifiutano per mancanza di utenti: ripresentare tra qualche mese con i download veri. |
@@ -63,7 +62,7 @@ Le versioni già pubblicate (nucleo 0.2.0, Canti 0.5.0, lingue) restano Apache: 
 
 ## Cose fatte ma non ancora provate dal vero
 
-- **Testi di licenza nell'installatore** (`apps/desktop/electron-builder.yml`, `extraResources` → `resources/legal/`): provato il 2026-10-05 con `pnpm dist:dir` (LICENSE, NOTICE e PLUGIN-EXCEPTION.md presenti). Resta da vedere nell'installatore vero al primo rilascio.
+- **Release 0.2.5 verificata dal vero** (2026-10-05): impronta dell'installatore uguale a `latest.yml`, pacchetto estratto con 7-Zip (non installato: sul computer del fondatore c'è la 0.2.0, non si tocca) con `resources/legal/` (LICENSE, NOTICE, PLUGIN-EXCEPTION.md), lingue 0.2.1 e 0.1.1 in GPL, 26 prove e2e verdi con `CUELITH_E2E_EXECUTABLE`. Non provato: aggiornamento da 0.2.0 a 0.2.5 su un computer vero.
 - **Nuova procedura di rilascio** (`cuelith-core/.github/workflows/release.yml`): la release nasce in bozza con le note di `versioni/X.Y.Z.md` e diventa pubblica solo con tutti gli installatori. Si vedrà al prossimo rilascio. Se qualcosa non va, la versione resta in bozza e nessuno la vede.
 - **Aggiornamento da 0.1.0 a 0.2.0 su un computer vero**: provato solo il controllo («Cuelith è aggiornato» dalla 0.2.0), non il passaggio di versione.
 
@@ -109,6 +108,10 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 
 ## Trappole scoperte di recente
 
+- **Il feed `releases.atom` di GitHub elenca anche i tag senza release** (titolo = nome del tag). Dopo aver eliminato una release il suo tag resta e la voce resta nel feed: il sito (`functions/_lib/sources.js`) le scarta guardando il titolo, che nelle nostre release è «Cuelith X.Y.Z». Se cambia il modo di titolare le release, cambia anche quel controllo.
+- **Eliminare una release non ritira la licenza data**: chi ha già scaricato 0.1.0 o 0.2.0 le ha con Apache. Vale solo per la distribuzione nostra.
+- **Le vecchie distribuzioni di Cloudflare Pages** (4 di produzione e 1 di anteprima, con la licenza Apache, raggiungibili da `<id>.cuelith.pages.dev`) sono state lasciate: il fondatore ha detto che non sono attive. La cancellazione con `wrangler pages deployment delete` fu bloccata dai permessi; si può fare dalla dashboard.
+- **Su questo computer c'è un Cuelith 0.2.0 installato dal fondatore** (`%LOCALAPPDATA%\Programs\Cuelith`): per le prove sull'installatore non lanciarlo (sovrascrive e registra la disinstallazione), ma estrarlo con 7-Zip.
 - **Cambiare licenza di un plugin cambia il pacchetto**: il manifest `cuelith-plugin.json` e il `LICENSE` stanno dentro il `.cpkg`, quindi l'impronta SHA-256 cambia. Per questo i plugin non si ritoccano senza un nuovo rilascio, e il registry va aggiornato solo con l'impronta del pacchetto pubblicato.
 - **`LICENSE` deve restare il testo GPL puro**: GitHub lo riconosce così. L'eccezione per i plugin sta in `PLUGIN-EXCEPTION.md`, `NOTICE` e README, non dentro `LICENSE`.
 - In bash un comando con virgolette annidate e apostrofi può rompersi a metà: per le modifiche lunghe ai testi meglio uno script Node su file.

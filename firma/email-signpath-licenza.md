@@ -6,7 +6,7 @@ Per chi: il fondatore, che invia la mail al supporto di SignPath Foundation; chi
 
 1. Scrivi dall'indirizzo email con cui hai presentato la domanda (SignPath lega la richiesta a quell'indirizzo).
 2. Indirizzo: quello di supporto che compare nella loro mail di conferma, oppure `support@signpath.org` (controlla sul sito <https://signpath.org> prima di inviare).
-3. **Puoi inviarla subito**: il ramo predefinito del repo è `dev` e GitHub mostra già «GPL-3.0» nella pagina di `cuelith-core` (verificato il 2026-10-05). `main` resterà Apache fino alla prima release con la GPL.
+3. **Puoi inviarla subito**: la release 0.2.5 con la GPL è pubblica, GitHub mostra «GPL-3.0» su `cuelith-core` (ramo `main` compreso) e il sito è aggiornato.
 
 ## Testo
 
@@ -16,7 +16,7 @@ Hello,
 
 I submitted an application for free code signing for **Cuelith** on 2 October 2026 (repository: https://github.com/Cuelith/cuelith-core). I am writing to let you know that I have changed the project's licence since then, so that your review uses the correct information.
 
-- **Core (`cuelith-core`) and the bundled language plugins:** now **GPL-3.0-or-later** (OSI-approved). The `LICENSE` file is the unmodified GNU GPL v3 text, and GitHub detects it as such. Releases up to 0.2.0 stay available under Apache-2.0; the GPL applies from the next release, which is the first one we would like to sign.
+- **Core (`cuelith-core`) and the bundled language plugins:** now **GPL-3.0-or-later** (OSI-approved). The `LICENSE` file is the unmodified GNU GPL v3 text, and GitHub detects it as such. The first release under the GPL is **0.2.5** (published on 5 October 2026), and it is the one we would like to sign. The earlier releases (0.1.0 and 0.2.0, Apache-2.0) have been withdrawn from our download page and from GitHub Releases.
 - **Additional permission:** the core has a documented plugin exception under section 7 of the GPL (`PLUGIN-EXCEPTION.md`), which lets third parties license separate plugins as they wish. Plugins are separate programs, in separate repositories and packages, installed by users from the plugin list; **they are never part of the installer you would sign**. The installer contains only the GPL core, the two GPL language plugins, and open-source dependencies (MIT, ISC, BSD, Apache-2.0, MPL-2.0).
 - **SDK (`cuelith-sdk`):** a separate library, Apache-2.0, included in the build of the core as a dependency.
 - **No proprietary component** is or will be in the signed artifact, and the project remains free of charge.
