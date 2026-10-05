@@ -1,6 +1,6 @@
 # 0013 · Marketplace con plugin a pagamento: senza account, senza database, senza denaro
 
-Stato: **Deciso** (fondatore, 2026-10-05) nelle linee generali; **in costruzione**: oggi è fatto solo il punto 1 (catalogo, schema, controlli). Sostituisce le parti «Account», «Server licenze» e «Negozio» della [decisione 0008](0008-moduli-a-pagamento.md); restano valide le sue regole di fondo (licenza firmata legata al computer, verifica senza internet, mai fermare una diretta, limiti onesti). La licenza del nucleo è la [0012](0012-licenza-gpl-e-eccezione-plugin.md). Non è un parere legale né fiscale.
+Stato: **Deciso** (fondatore, 2026-10-05) nelle linee generali; **in costruzione**: fatte le fasi 1 (catalogo, schema, controlli) e 2 (pagine del sito). Sostituisce le parti «Account», «Server licenze» e «Negozio» della [decisione 0008](0008-moduli-a-pagamento.md); restano valide le sue regole di fondo (licenza firmata legata al computer, verifica senza internet, mai fermare una diretta, limiti onesti). La licenza del nucleo è la [0012](0012-licenza-gpl-e-eccezione-plugin.md). Non è un parere legale né fiscale.
 
 ## Vincoli del fondatore
 
@@ -69,7 +69,7 @@ Il nucleo che introduce il marketplace a pagamento leggerà l'indice 2. Fino ad 
 | Fase | Contenuto | Stato |
 | --- | --- | --- |
 | **1** | Schema del registry e dell'SDK (protocollo 1.14: `access`, `price`, `checkoutUrl`, `licensing`, `authorKey`, firma dei pacchetti), controlli del registry, due indici, decisione 0013 | **Fatto** (su `dev`, non rilasciato) |
-| 2 | Pagine `/marketplace` e `/marketplace/submit` nel sito (italiano e inglese, telefono compreso), con l'avviso sull'affiliazione | Da fare |
+| 2 | Pagine `/marketplace` e `/marketplace/submit` nel sito (italiano e inglese, telefono compreso), con l'avviso sull'affiliazione; `/marketplace/buy/<id>`; controllo condiviso delle proposte; `pnpm keys` e `pnpm sign` nel modello di plugin | **Fatto** (su `dev`, non pubblicato; il modulo risponde «non disponibile» finché non c'è la fase 3) |
 | 3 | Pages Functions: proposta con KV e Turnstile, pannello con Access, approvazione che apre la pull request, notaio dei permessi | Da fare |
 | 4 | Nucleo: stato «a pagamento», pulsante Acquista, campo licenza, chiavi del computer con `safeStorage`, permesso cifrato, rinnovo silenzioso, `ctx.license` per i plugin; prova con un fornitore simulato | Da fare |
 | 5 | `MARKETPLACE_SETUP.md`, aggiornamento di `CLAUDE.md` e `STATO.md` | Da fare, in parte già a ogni fase |
