@@ -27,7 +27,7 @@ Il responsabile, da amministratore, può ancora inviare direttamente su `dev` e 
 
 ## Perché l'accordo di contribuzione
 
-Con la sola licenza Apache ogni contributore resta l'unico a poter decidere del suo pezzo. L'accordo lascia a ciascuno il diritto d'autore e dà al titolare del progetto il diritto di distribuire i contributi anche con altre condizioni: serve per poter offrire in futuro moduli o edizioni a pagamento (decisioni 0004 e 0008) senza dover chiedere il consenso a tutti. In cambio il progetto si impegna a tenere i contributi accettati disponibili con licenza Apache 2.0. Il testo è una base ragionevole, non un parere legale: prima di vendere qualcosa va fatto rivedere da un avvocato, indicando il titolare per nome.
+Con la sola licenza Apache ogni contributore resta l'unico a poter decidere del suo pezzo. L'accordo lascia a ciascuno il diritto d'autore e dà al titolare del progetto il diritto di distribuire i contributi anche con altre condizioni: serve per poter offrire in futuro moduli o edizioni a pagamento (decisioni 0004 e 0008) senza dover chiedere il consenso a tutti. In cambio il progetto si impegna a tenere i contributi accettati disponibili con una licenza open source (aggiornato il 2026-10-05, decisione 0012: ogni contributo è offerto con la licenza del repo e il titolare ha il diritto di rilicenziare). Il testo è una base ragionevole, non un parere legale: prima di vendere qualcosa va fatto rivedere da un avvocato, indicando il titolare per nome.
 
 ## Nome e logo
 

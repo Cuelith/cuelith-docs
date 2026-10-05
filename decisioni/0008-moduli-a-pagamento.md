@@ -1,10 +1,10 @@
 # 0008 · Moduli a pagamento: architettura (da costruire più avanti)
 
-Stato: **Proposta di architettura** (2026-10-01). Oggi nulla è a pagamento (decisione 0004). Questo documento fissa la logica in anticipo, così le parti costruite adesso (ID di installazione, registry, pacchetti verificati, processi dei moduli) non vanno rifatte. Prima di vendere qualsiasi cosa serve il parere di un avvocato.
+Stato: **Proposta di architettura** (2026-10-01), **da riprogettare**: il fondatore ha escluso account, database propri e pagamenti gestiti da lui (2026-10-05), quindi le parti «Account», «Server licenze» e «Negozio» di questa proposta non valgono più così come sono. Resta valido il resto: licenza firmata legata al computer, verifica senza internet, regola d'oro «mai fermare una diretta», limiti onesti. Il nucleo non è più Apache ma GPL con eccezione per i plugin ([decisione 0012](0012-licenza-gpl-e-eccezione-plugin.md)). La nuova architettura sarà la decisione 0013. Oggi nulla è a pagamento (decisione 0004). Questo documento fissa la logica in anticipo, così le parti costruite adesso (ID di installazione, registry, pacchetti verificati, processi dei moduli) non vanno rifatte. Prima di vendere qualsiasi cosa serve il parere di un avvocato.
 
 ## Il punto di partenza: il nucleo è open source
 
-Il nucleo è Apache 2.0: chiunque può leggerlo, modificarlo e ridistribuirlo, compreso togliere un controllo di licenza. Ne seguono tre regole:
+Il nucleo è open source (dalla versione successiva alla 0.2.0 GPL 3.0 o successiva, prima Apache 2.0): chiunque può leggerlo, modificarlo e ridistribuirlo, compreso togliere un controllo di licenza. Ne seguono tre regole:
 
 1. **La sicurezza sta nelle chiavi, non nel segreto del codice.** Il formato delle licenze e il codice che le verifica sono pubblici. Senza la chiave privata del server nessuno può fabbricare una licenza valida.
 2. **Il controllo non vive solo nel nucleo.** Un nucleo modificato può saltare i controlli, quindi la protezione sta in tre posti:
@@ -16,7 +16,7 @@ Il nucleo è Apache 2.0: chiunque può leggerlo, modificarlo e ridistribuirlo, c
    - chi regala un modulo non deve poterlo fare con un clic;
    - una copia diffusa deve essere riconoscibile.
 
-   Il codice dei moduli a pagamento **non** è Apache: ha la licenza del suo autore (EULA).
+   Il codice dei moduli a pagamento **non** è GPL: ha la licenza del suo autore (EULA), grazie all'eccezione per i plugin (0012).
 
 ## Le parti
 

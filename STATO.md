@@ -1,10 +1,10 @@
 # Stato del progetto e come riprendere
 
-Aggiornato il **2026-10-03**. Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
+Aggiornato il **2026-10-05**. Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
 
 ## In una riga
 
-Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è online su `cuelith.lzrhive.it`, i repo sono pronti per contributi esterni. Prossimo lavoro: **Fase 1**, partendo da due prove tecniche.
+Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è online su `cuelith.lzrhive.it`, i repo sono pronti per contributi esterni. **Dal 2026-10-05 il nucleo è in transizione da Apache 2.0 a GPL 3.0 con eccezione per i plugin** (decisione 0012): il lavoro è su `dev`, vale dalla prossima release. Prossimo lavoro: **Fase 1** (due prove tecniche) e la decisione 0013 sul marketplace.
 
 ## Cosa è pubblico oggi
 
@@ -23,6 +23,16 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 
 Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-03 erano tutti puliti e inviati. Anche l'hub personale `lzrhive.it` (cartella `C:\1.Personale\lzrhive.it`, repo `ML-lzrhive/lzrhive.it`) è collegato a questo lavoro: vedi sotto.
 
+## Licenze (decisione 0012, dal 2026-10-05)
+
+| Repo | Licenza |
+| --- | --- |
+| `cuelith-core`, `plugin-songs`, `plugin-locale-it`, `plugin-locale-en` | **GPL 3.0 o successiva** (nucleo con `PLUGIN-EXCEPTION.md`: i plugin che usano solo protocollo, SDK, pannelli e file di dati hanno la licenza che vogliono) |
+| `cuelith-sdk`, `plugin-template` | **Apache 2.0**, di proposito: i plugin li incorporano |
+| `cuelith-registry`, `cuelith-docs`, `cuelith-site` | Apache 2.0 |
+
+Le versioni già pubblicate (nucleo 0.2.0, Canti 0.5.0, lingue) restano Apache: non si ritira. Mai copiare codice del nucleo nell'SDK o in un plugin; mai dipendenze incompatibili con la GPLv3 (`pnpm licenses list`). Il nome «Cuelith» non è nella licenza: README del nucleo e `TRADEMARK.md`.
+
 ## Regole di lavoro che valgono sempre
 
 - **Rami**: il lavoro va su `dev` (ramo predefinito di ogni repo); `main` riceve solo versioni con tag SemVer. `main` e `dev` sono protetti: chi non è amministratore passa da pull request, approvazione e controlli verdi. Il fondatore (e chi lavora con le sue credenziali `gh`) può inviare direttamente: GitHub stampa «Changes must be made through a pull request» ma l'invio passa.
@@ -39,6 +49,10 @@ Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-03 erano
 
 | Cosa | Chi | Cosa fare quando si sblocca |
 | --- | --- | --- |
+| **Mail a SignPath per il cambio di licenza** | fondatore | Testo pronto in [firma/email-signpath-licenza.md](firma/email-signpath-licenza.md): da inviare appena la GPL è su `main` (o prima, se vuole avvisarli subito). |
+| **Primo rilascio con la GPL** (nucleo 0.3.0 o simile, e nuove versioni di Canti e delle due lingue) | fondatore + Claude | Il codice è pronto su `dev` ma **nulla è stato rilasciato né portato su `main`**. Al rilascio: note di versione che dicono il cambio di licenza (in `versioni/X.Y.Z.md`), plugin con `license` GPL nel manifest e nel registry, controllare che l'installatore contenga `resources/legal/` (LICENSE, NOTICE, PLUGIN-EXCEPTION.md), aggiornare il README e il sito se la lista cambia. |
+| **Parere legale** su eccezione per i plugin e su obblighi da «piattaforma online» (DSA) | fondatore | Prima di qualsiasi plugin a pagamento nel marketplace, non prima. |
+| **Marketplace a pagamento (decisione 0013)** | fondatore + Claude | Proposta già discussa nella conversazione del 2026-10-05, da riprendere dopo la messa a posto di policy e tutela: nessun account, nessun database; Git come catalogo (`cuelith-registry`) e proposta dal sito con approvazione in un angolo protetto (Cloudflare Access) che unisce la pull request; venditore esterno (negozio dello sviluppatore, «merchant of record»); licenza come file firmato da un piccolo servizio senza stato (Cloudflare Workers) e legato al computer, con i posti tenuti dal negozio; zero commissioni (il fondatore non tocca denaro). Sostituisce le parti «Account» e «Server licenze» della 0008. Fasi: B catalogo (campi `access`, `pricing`, `purchaseUrl`, `licensing` e pagina Marketplace nel sito e nell'app), C proposta dal web e approvazione, D licenze (notaio, chiavi del dispositivo, `ctx.license`). |
 | **Firma dell'installatore Windows**: domanda inviata a SignPath Foundation il 2026-10-02 | risposta di SignPath via email al fondatore | Se chiedono chiarimenti: risposte pronte in [firma/domanda-signpath.md](firma/domanda-signpath.md). Se accettano: aggiungere al README di `cuelith-core` e alla sezione Download del sito la frase «Free code signing provided by SignPath.io, certificate by SignPath Foundation»; collegare la firma a `release.yml`; ogni rilascio va poi approvato a mano. Se rifiutano per mancanza di utenti: ripresentare tra qualche mese con i download veri. |
 | **Marchio «Cuelith»**: rimandato per il costo (149–183 € in Italia) | fondatore | Depositare quando il progetto ha utenti o prima del primo incasso. Marchio denominativo, classi 9 e 42, portale UIBM. Ricerca fatta: nessun «Cuelith»; unico simile in UE «CueLight» (classi 11, 16, 41, non software). Il fondatore ha detto che il nome «al massimo può essere ripensato in futuro». |
 | **Email del progetto** per le segnalazioni | fondatore | Oggi sicurezza e comportamento rimandano alla pagina riservata di GitHub. Con un indirizzo vero, aggiornare `SECURITY.md` e `CODE_OF_CONDUCT.md` nel repo `.github`. |
@@ -49,6 +63,7 @@ Tutti i repo stanno affiancati in `C:\1.Materiali\Cuelith\`. Il 2026-10-03 erano
 
 ## Cose fatte ma non ancora provate dal vero
 
+- **Testi di licenza nell'installatore** (`apps/desktop/electron-builder.yml`, `extraResources` → `resources/legal/`): provato il 2026-10-05 con `pnpm dist:dir` (LICENSE, NOTICE e PLUGIN-EXCEPTION.md presenti). Resta da vedere nell'installatore vero al primo rilascio.
 - **Nuova procedura di rilascio** (`cuelith-core/.github/workflows/release.yml`): la release nasce in bozza con le note di `versioni/X.Y.Z.md` e diventa pubblica solo con tutti gli installatori. Si vedrà al prossimo rilascio. Se qualcosa non va, la versione resta in bozza e nessuno la vede.
 - **Aggiornamento da 0.1.0 a 0.2.0 su un computer vero**: provato solo il controllo («Cuelith è aggiornato» dalla 0.2.0), non il passaggio di versione.
 
@@ -70,7 +85,7 @@ La Fase 1 del documento (cap. 30) porta camera, scene, sottopancia e streaming. 
 
 Poi, nell'ordine della [decisione 0001](decisioni/0001-librerie-canti-accordi.md): media del nucleo (immagini, video, audio con scelta dell'uscita) → Accordi → Bibbia → disposizione Culto → compositing delle scene.
 
-Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la prossima è la **0012**) e confermata dal fondatore se cambia ciò che vede l'utente.
+Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la prossima è la **0013**) e confermata dal fondatore se cambia ciò che vede l'utente.
 
 ## Dove guardare per ogni cosa
 
@@ -79,7 +94,8 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 | Visione, interfaccia, specifica | [documento/index.html](documento/index.html) |
 | Lingue, scelta della lingua, «plugin», note in due lingue | [decisione 0010](decisioni/0010-lingua-inglese-e-scelta-della-lingua.md) |
 | Contributi esterni, protezioni, accordo di contribuzione, nome e logo | [decisione 0011](decisioni/0011-contributi-e-tutela.md) |
-| Plugin a pagamento (solo architettura, niente di costruito) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
+| Licenza GPL, SDK Apache, eccezione per i plugin, marchio | [decisione 0012](decisioni/0012-licenza-gpl-e-eccezione-plugin.md) |
+| Plugin a pagamento (solo architettura, niente di costruito; **da riprogettare** senza account né database, vedi 0012) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
 | Regole del sito (tono, schermate, animazioni, inglese tutto in inglese) | `cuelith-site/CLAUDE.md` e `README.md` |
 | Regole per chi sviluppa plugin | repo `.github`: `DEVELOPERS.md`, `CONTRIBUTING.md` |
 | Regole di ogni repo | il suo `CLAUDE.md` |
@@ -93,6 +109,9 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 
 ## Trappole scoperte di recente
 
+- **Cambiare licenza di un plugin cambia il pacchetto**: il manifest `cuelith-plugin.json` e il `LICENSE` stanno dentro il `.cpkg`, quindi l'impronta SHA-256 cambia. Per questo i plugin non si ritoccano senza un nuovo rilascio, e il registry va aggiornato solo con l'impronta del pacchetto pubblicato.
+- **`LICENSE` deve restare il testo GPL puro**: GitHub lo riconosce così. L'eccezione per i plugin sta in `PLUGIN-EXCEPTION.md`, `NOTICE` e README, non dentro `LICENSE`.
+- In bash un comando con virgolette annidate e apostrofi può rompersi a metà: per le modifiche lunghe ai testi meglio uno script Node su file.
 - **La politica di sicurezza della console dell'hub ammette immagini solo da sé e da `data:`**: niente `blob:`. Per leggere un file scelto dall'utente si usa `createImageBitmap` o `data:`.
 - Nelle prove, un comando concatenato in PowerShell non si ferma da solo se un passo fallisce: controllare l'esito dei test prima di pubblicare.
 

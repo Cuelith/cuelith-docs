@@ -1,10 +1,10 @@
 # 0004 · Licenza, marketplace, aggiornamenti, librerie organizzate
 
-Stato: **Deciso** (fondatore, 2026-09-30).
+Stato: **Deciso** (fondatore, 2026-09-30). **La parte sulla licenza è superata dalla [decisione 0012](0012-licenza-gpl-e-eccezione-plugin.md)** (2026-10-05): il nucleo passa da Apache 2.0 a GPL 3.0 o successiva, con eccezione per i plugin.
 
 ## Licenza e sostenibilità: strada A
 
-- Il **nucleo resta open source (Apache 2.0) per sempre**. Il codice pubblicato con una licenza libera non si puo' "ritirare": chiunque abbia una versione puo' usarla e ridistribuirla. Un blocco a distanza di installazioni esistenti non si fa (fiducia della community, tutela dei consumatori in UE).
+- Il **nucleo resta open source per sempre** (fino alla 0.2.0 con Apache 2.0, poi GPL: vedi 0012). Il codice pubblicato con una licenza libera non si puo' "ritirare": chiunque abbia una versione puo' usarla e ridistribuirla. Un blocco a distanza di installazioni esistenti non si fa (fiducia della community, tutela dei consumatori in UE).
 - Un'eventuale sostenibilita' economica futura passera' da **servizi e moduli** (es. sincronizzazione cloud, moduli professionali, assistenza) controllati dal server al momento del download o dell'attivazione: cio' che e' a pagamento lo e' per tutti.
 - **Oggi nulla e' a pagamento**, moduli compresi (conferma della decisione del cap. 29: solo moduli gratuiti).
 - **CLA (accordo per i contributori)** da introdurre prima di accettare codice esterno, per non precludere scelte future.

@@ -31,4 +31,4 @@ Documentazione di Cuelith: il documento di progetto e le decisioni prese durante
 
 Organizzazione GitHub [Cuelith](https://github.com/Cuelith): `cuelith-core` (motore, app, postazione, uscite), `cuelith-sdk` (protocollo e strumenti per i moduli), `cuelith-registry` (elenco dei moduli), `plugin-template` (modulo d'esempio), `plugin-locale-it` (lingua italiana), `plugin-songs` (modulo Canti).
 
-Licenza Apache 2.0.
+Licenza Apache 2.0 per questi documenti. Il nucleo (`cuelith-core`) e i plugin ufficiali sono GPL 3.0 o successiva; l'SDK e il modello di plugin sono Apache 2.0: vedi la [decisione 0012](decisioni/0012-licenza-gpl-e-eccezione-plugin.md).

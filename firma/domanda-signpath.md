@@ -63,7 +63,7 @@ L'installatore di Windows non è firmato: chi lo apre vede «PC protetto da Wind
 
 **Artifact to sign**
 
-> The Windows installer `Cuelith-Setup-<version>.exe` (NSIS, per-user, no administrator rights) and the executables inside it. Licence: Apache-2.0 for the core and for every component in the installer.
+> The Windows installer `Cuelith-Setup-<version>.exe` (NSIS, per-user, no administrator rights) and the executables inside it. Licence: GPL-3.0-or-later for the core and for the bundled language plugins (the core includes the SDK packages, which are Apache-2.0). Paid plugins by third parties are never part of the installer.
 
 ## Cosa ho già preparato
 
