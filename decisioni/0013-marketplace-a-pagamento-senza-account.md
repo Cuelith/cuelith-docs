@@ -70,9 +70,23 @@ Il nucleo che introduce il marketplace a pagamento leggerà l'indice 2. Fino ad 
 | --- | --- | --- |
 | **1** | Schema del registry e dell'SDK (protocollo 1.14: `access`, `price`, `checkoutUrl`, `licensing`, `authorKey`, firma dei pacchetti), controlli del registry, due indici, decisione 0013 | **Fatto** (su `dev`, non rilasciato) |
 | 2 | Pagine `/marketplace` e `/marketplace/submit` nel sito (italiano e inglese, telefono compreso), con l'avviso sull'affiliazione; `/marketplace/buy/<id>`; controllo condiviso delle proposte; `pnpm keys` e `pnpm sign` nel modello di plugin | **Fatto** (su `dev`, non pubblicato; il modulo risponde «non disponibile» finché non c'è la fase 3) |
-| 3 | Pages Functions: proposta con KV e Turnstile, pannello con Access, approvazione che apre la pull request, notaio dei permessi | Da fare |
+| 3 | Pages Functions: proposta con KV e Turnstile, pannello con Access, approvazione che apre la pull request, notaio dei permessi | **Codice fatto e provato** (94 test del sito, anche nel runtime vero di Cloudflare); **da collegare** all'infrastruttura (KV, Turnstile, Access, token, chiavi: `cuelith-site/MARKETPLACE_SETUP.md`) e da provare dal vero con un negozio di prova |
 | 4 | Nucleo: stato «a pagamento», pulsante Acquista, campo licenza, chiavi del computer con `safeStorage`, permesso cifrato, rinnovo silenzioso, `ctx.license` per i plugin; prova con un fornitore simulato | Da fare |
 | 5 | `MARKETPLACE_SETUP.md`, aggiornamento di `CLAUDE.md` e `STATO.md` | Da fare, in parte già a ogni fase |
+
+## Fase 3: scelte fatte nel costruire
+
+- **Approvazione = pull request, non commit.** Il sito apre una pull request nel registry; la CI `validate` (schema vero, pacchetto, impronta, permessi, icona unica, firma) è il cancello, e a controlli verdi GitHub la unisce da sola (auto-merge). Un commit diretto su `main` con una voce sbagliata bloccherebbe la pubblicazione di tutti gli indici. Perché funzioni il repo del registry deve **permettere l'auto-merge** e la protezione di `main` non deve chiedere approvazioni umane (il «Approva» del pannello lo è): da confermare, vedi `MARKETPLACE_SETUP.md` §4.
+- **Il pannello verifica il token di Access da sé** (firma RS256 con le chiavi del team, scadenza, emittente, AUD, email) e chiede, per ogni modifica, un'intestazione propria e l'origine del sito. Senza configurazione risponde 503: mai un accesso libero. Niente password.
+- **La voce del registry si costruisce dal pacchetto, non dalla proposta**: manifest e icona si leggono dallo zip (solo quelle due voci si decomprimono, con limiti di dimensione), impronta e dimensione si calcolano sul file scaricato; la proposta fornisce solo ciò che il pacchetto non dice (tipo, prezzo, negozio, chiave d'autore, firma). Un plugin di terzi non è mai «verified». Un aggiornamento è accettato solo con la stessa chiave d'autore, lo stesso tipo e una versione nuova.
+- **Il link di acquisto pubblicato lo sceglie il fondatore** nel pannello (quello con il suo riferimento di affiliazione), ricontrollato contro i negozi ammessi.
+- **La firma del pacchetto è un campo del modulo**: con la chiave d'autore ogni versione ha la sua firma (`pnpm sign`), altrimenti il registry la rifiuterebbe.
+- **Dati personali**: l'email di chi propone sta solo in KV (scade in 60 giorni e si cancella alla decisione) e non finisce mai in GitHub; l'indirizzo di chi invia non si conserva, solo un'impronta con scadenza di un giorno.
+- **Notaio**: rifiuta le chiavi il cui limite di attivazioni non sia da 1 a 3, e libera subito il posto preso se poi rifiuta; un permesso è legato al computer (rinnovo: il nome del posto presso il fornitore deve essere quello derivato dalla chiave del computer); chiavi di prova (`test_mode`) solo con `ALLOW_TEST_MODE`.
+
+### Da verificare dal vero (non provabile senza un negozio)
+
+I test usano un fornitore simulato che segue la documentazione ufficiale. Vanno confermati con un prodotto in **test mode** di Lemon Squeezy: la forma esatta delle risposte (`meta.store_id`, `license_key.activation_limit`, stato dopo un **rimborso** — la documentazione consultata non lo dice), se il cliente può **liberare un posto** quando il computer è rotto (portale del cliente) o serve un nostro percorso, e il comportamento di `validate` con `instance_id`.
 
 ## Cosa non si può impedire
 
