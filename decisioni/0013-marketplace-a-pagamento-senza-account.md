@@ -1,5 +1,7 @@
 # 0013 · Marketplace con plugin a pagamento: senza account, senza database, senza denaro
 
+> **2026-10-06: superata in parte dalla [decisione 0014](0014-marketplace-senza-commissione.md).** La commissione del 10%, l'affiliazione e la clausola anti-dirottamento non ci sono più. Notaio, licenze, plugin ritirati e firme restano come descritti qui.
+
 Stato: **Deciso** (fondatore, 2026-10-05) nelle linee generali; **in costruzione**: fatte le fasi 1 (catalogo, schema, controlli) e 2 (pagine del sito). Sostituisce le parti «Account», «Server licenze» e «Negozio» della [decisione 0008](0008-moduli-a-pagamento.md); restano valide le sue regole di fondo (licenza firmata legata al computer, verifica senza internet, mai fermare una diretta, limiti onesti). La licenza del nucleo è la [0012](0012-licenza-gpl-e-eccezione-plugin.md). Non è un parere legale né fiscale.
 
 ## Vincoli del fondatore
