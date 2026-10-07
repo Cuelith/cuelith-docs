@@ -1,7 +1,7 @@
 # Decisione 0015: stili del testo, globali e dell'editor
 
 - **Data**: 2026-10-07
-- **Stato**: decisa dal fondatore; **fase 1 fatta nel ramo `dev` del nucleo** (calcolo, controllo dello spazio, campi facoltativi, uscite e anteprima); fasi 2–4 da fare
+- **Stato**: decisa dal fondatore; **fasi 1–3 fatte nel ramo `dev`** (core 0.4.0, protocollo 1.16: campi facoltativi, calcolo e controllo dello spazio, riga degli stili sotto gli sfondi, stile dell'editor, avviso mentre si scrive); prova nell'app del fondatore da fare; fase 4 (formattazione dentro il testo) da fare
 
 ## Il problema
 
