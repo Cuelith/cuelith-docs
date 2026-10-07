@@ -1,7 +1,7 @@
 # Decisione 0015: stili del testo, globali e dell'editor
 
 - **Data**: 2026-10-07
-- **Stato**: decisa dal fondatore nei principi; da realizzare in fasi (nessun codice ancora)
+- **Stato**: decisa dal fondatore; **fase 1 fatta nel ramo `dev` del nucleo** (calcolo, controllo dello spazio, campi facoltativi, uscite e anteprima); fasi 2–4 da fare
 
 ## Il problema
 

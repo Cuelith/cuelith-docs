@@ -97,7 +97,7 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 | Contributi esterni, protezioni, accordo di contribuzione, nome e logo | [decisione 0011](decisioni/0011-contributi-e-tutela.md) |
 | Licenza GPL, SDK Apache, eccezione per i plugin, marchio | [decisione 0012](decisioni/0012-licenza-gpl-e-eccezione-plugin.md) |
 | Marketplace a pagamento: architettura, fasi, commissione, cosa è vero e cosa no | [decisione 0013](decisioni/0013-marketplace-a-pagamento-senza-account.md) |
-| Stili del testo (globali sotto gli sfondi, dell'editor, controllo dello spazio): decisi, nessun codice ancora | [decisione 0015](decisioni/0015-stili-del-testo.md) |
+| Stili del testo (globali sotto gli sfondi, dell'editor, controllo dello spazio): decisi; fase 1 (calcolo e controllo) fatta su `dev`, non ancora in una release | [decisione 0015](decisioni/0015-stili-del-testo.md) |
 | Marketplace senza commissione: cosa cambia, stati dei plugin, chi risponde, piano a costo zero | [decisione 0014](decisioni/0014-marketplace-senza-commissione.md) |
 | Plugin a pagamento, prima proposta (le parti Account, Server licenze, Negozio sono **superate dalla 0013**) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
 | Regole del sito (tono, schermate, animazioni, inglese tutto in inglese) | `cuelith-site/CLAUDE.md` e `README.md` |
