@@ -10,10 +10,10 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 
 | Cosa | Versione | Dove |
 | --- | --- | --- |
-| Programma (nucleo) | **0.3.2** (pubblica il 2026-10-07: disinstallare un plugin in funzione non dà più «Errore interno», e installare/disinstallare mostra «in corso»; la 0.3.1, del 2026-10-06: «Prodotto da… Venduto da…», senza affiliazione; la 0.3.0 portò il marketplace a pagamento, la 0.2.5 fu la prima con la GPL) | repo `cuelith-core`, release con installatore Windows e AppImage Linux. Le release 0.1.0 e 0.2.0 sono state **eliminate** il 2026-10-05 (restano i tag Git) |
+| Programma (nucleo) | **0.3.3** (pubblica il 2026-10-07: schede della colonna di sinistra che scorrono su una riga con frecce, sfumature e elenco ▾, colonna delle icone dei plugin che scorre col «+» sempre raggiungibile; prova e2e `tabs.spec.ts` che con 7 plugin veri fallisce senza la correzione; la 0.3.2: disinstallare un plugin in funzione non dà più «Errore interno», e installare/disinstallare mostra «in corso»; la 0.3.1, del 2026-10-06: «Prodotto da… Venduto da…», senza affiliazione; la 0.3.0 portò il marketplace a pagamento, la 0.2.5 fu la prima con la GPL) | repo `cuelith-core`, release con installatore Windows e AppImage Linux. Le release 0.1.0 e 0.2.0 sono state **eliminate** il 2026-10-05 (restano i tag Git) |
 | Protocollo / SDK | 1.15.0 / tag v0.7.0 | `cuelith-sdk` |
-| Lingua italiana | 0.2.4 | `plugin-locale-it` (inclusa nell'installatore) |
-| Lingua inglese | 0.1.4 | `plugin-locale-en` (inclusa nell'installatore) |
+| Lingua italiana | 0.2.5 | `plugin-locale-it` (inclusa nell'installatore) |
+| Lingua inglese | 0.1.5 | `plugin-locale-en` (inclusa nell'installatore) |
 | Plugin **Brani** (prima «Canti») | 0.5.2 (GPL; le 0.5.0 e 0.4.2 Apache sono ancora scaricabili dal repo del plugin) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.2.0 | `plugin-template` |
 | Marketplace | Brani 0.5.2, 0.5.1, 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
