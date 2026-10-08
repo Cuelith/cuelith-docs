@@ -1,6 +1,6 @@
 # Stato del progetto e come riprendere
 
-Aggiornato il **2026-10-06** (sera). Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
+Aggiornato il **2026-10-07** (sera). Questo è il primo file da leggere per riprendere il lavoro su Cuelith senza la conversazione precedente. Dice dove siamo, cosa è in sospeso e cosa viene dopo. I dettagli stanno nel [documento di progetto](documento/index.html) e nelle [decisioni](decisioni).
 
 ## In una riga
 
@@ -10,14 +10,14 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 
 | Cosa | Versione | Dove |
 | --- | --- | --- |
-| Programma (nucleo) | **0.3.3** (pubblica il 2026-10-07: schede della colonna di sinistra che scorrono su una riga con frecce, sfumature e elenco ▾, colonna delle icone dei plugin che scorre col «+» sempre raggiungibile; prova e2e `tabs.spec.ts` che con 7 plugin veri fallisce senza la correzione; la 0.3.2: disinstallare un plugin in funzione non dà più «Errore interno», e installare/disinstallare mostra «in corso»; la 0.3.1, del 2026-10-06: «Prodotto da… Venduto da…», senza affiliazione; la 0.3.0 portò il marketplace a pagamento, la 0.2.5 fu la prima con la GPL) | repo `cuelith-core`, release con installatore Windows e AppImage Linux. Le release 0.1.0 e 0.2.0 sono state **eliminate** il 2026-10-05 (restano i tag Git) |
-| Protocollo / SDK | 1.15.0 / tag v0.7.0 | `cuelith-sdk` |
-| Lingua italiana | 0.2.5 | `plugin-locale-it` (inclusa nell'installatore) |
-| Lingua inglese | 0.1.5 | `plugin-locale-en` (inclusa nell'installatore) |
-| Plugin **Brani** (prima «Canti») | 0.5.2 (GPL; le 0.5.0 e 0.4.2 Apache sono ancora scaricabili dal repo del plugin) | `plugin-songs`, nel marketplace |
+| Programma (nucleo) | **0.4.0** (pubblica il 2026-10-09: interfaccia rifatta, Ctrl+K, impostazioni dei plugin, avvio guidato, stili del testo con bordo e ombra, installatore con scelta della lingua e riconoscimento dell'aggiornamento, protezioni con tanti plugin; vedi `cuelith-core/versioni/0.4.0.md`). Prima: 0.3.3 | `cuelith-core`, GitHub Releases |
+| Protocollo / SDK | **1.19.0** / **0.8.0** (npm `@cuelith/protocol`, `sdk`, `panel`, `ui`, pubblicati il 2026-10-09; l'accesso a npm è con chiavi di sicurezza, la conferma si fa nel browser) | `cuelith-sdk` |
+| Lingua italiana | 0.2.6 | `plugin-locale-it` (inclusa nell'installatore) |
+| Lingua inglese | 0.1.6 | `plugin-locale-en` (inclusa nell'installatore) |
+| Plugin **Brani** (prima «Canti») | **0.6.0** (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.2.0 | `plugin-template` |
-| Marketplace | Brani 0.5.2, 0.5.1, 0.5.0 e 0.4.2 | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
-| Sito | v0.1.3 (con Ko-fi, link a lzrhive e dati strutturati per i motori di ricerca) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
+| Marketplace | Brani 0.6.0 (e le precedenti); `extras.json` con immagine e guida | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
+| Sito | **0.6.0** (2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
 
@@ -62,6 +62,14 @@ Le versioni già pubblicate (nucleo 0.2.0, Canti 0.5.0, lingue) restano Apache: 
 | **Scheda di Cuelith sull'hub lzrhive.it** | fondatore, dalla console `https://lzrhive.it/admin/` | Il sito di Cuelith ha già il link a lzrhive e a Ko-fi. La scheda da creare (testi italiano e inglese, immagine `cuelith-core/brand/lzrhive-card.jpg`) è in [hub-lzrhive.md](hub-lzrhive.md). Il fondatore ha segnalato l'errore «file immagine non valido» al caricamento: era un difetto della console (le immagini `blob:` erano bloccate dalla sua politica di sicurezza), corretto e pubblicato su `main` dell'hub il 2026-10-03, provato in un browser vero. Da confermare che ora il caricamento riesca (ricaricare con Ctrl+F5). Il fondatore ha poi detto che la scheda è fatta ("il punto 2 è già fatto"). |
 | **Google Search Console** per `lzrhive.it` | fondatore | Il sito non compare ancora cercando «Cuelith» (online da due giorni, nessun link entrante). Guida data al fondatore: proprietà di tipo Dominio `lzrhive.it`, record TXT `google-site-verification=…` su Cloudflare (DNS), poi invio di `https://cuelith.lzrhive.it/sitemap.xml` e «Richiedi indicizzazione» per `/` e `/en/`. Controllo: la ricerca `site:cuelith.lzrhive.it`. Il sito è tecnicamente a posto (nessun noindex, mappa del sito, canonical, dati strutturati `SoftwareApplication`); ciò che manca è tempo e link. |
 
+## Lavoro su `dev` non pubblicato (2026-10-07): da provare nell'app dal fondatore
+
+Il fondatore vuole provare tutto in locale prima di pubblicare (nucleo 0.4.0, protocolli 1.17, 1.18 e 1.19). Comprende: stili del testo (0015) con **righe intere**, **bordo e ombra**; **GIF animate sulle uscite**; **«Solo sfondo»** e **colonna di destra** (0016); anteprima fedele (la dimensione ottica del carattere si fissa nel riquadro piccolo, altrimenti il testo usciva dal bordo). Il sito (`cuelith-site`, ramo `dev`, **non pubblicato**) ha già le nuove voci nella sezione «uscita-sala»: pubblicarlo solo con la release 0.4.0 (niente funzioni finte). **Prima di pubblicare**: registrare in Git `cuelith-sdk` (protocolli 1.17, 1.18 e 1.19, non ancora in un commit), `cuelith-registry` (immagine e guida: pubblicare l'indice crea `extras.json`), `cuelith-site` e la guida `DEVELOPERS(.it).md` in `cuelith-community` (sezioni 10 e 11), alzare le versioni (sdk 0.8.0?, `@cuelith/*` su npm con il codice 2FA del fondatore), aggiornare le note `versioni/0.4.0.md` (già scritte), rifare le schermate del sito (`pnpm shots`) e rilanciare `pnpm e2e` (31 prove verdi il 2026-10-07).
+
+**Ancora da fare, nell'ordine deciso con il fondatore** (2026-10-07): (1) ~~modello di interfaccia dei plugin, colonna sinistra (decisione 0017)~~ **fatto su `dev`**; (2) ~~marketplace migliorato e scheda per le lingue; Brani fuori dall'installatore con avvio guidato; immagine e guida degli autori; installatore con lingua e aggiornamento (decisione 0018)~~ **fatto su `dev`** (la procedura guidata dell'installatore va guardata a mano una volta); (3) ~~interfaccia di Brani rifatta~~ **fatto su `dev`** (plugin 0.6.0, decisione 0019: va pubblicato il plugin e aggiornato `cuelith-registry/plugins/cuelith.songs.json` con impronta e dimensione del pacchetto **pubblicato**); (4) ~~colonna centrale~~ **fatto su `dev`** (miniature S/M/L, stato a parole, conteggio: decisione 0019). **Il plugin Accordi, annesso a Brani, si farà molto più avanti** (fondatore, 2026-10-08) e non è ancora progettato: non si anticipa nulla (niente anteprima con gli accordi, trasposizione o schede per i musicisti).
+
+**Pubblicazione 0.4.0 eseguita il 2026-10-09** nell'ordine di [pubblicazione-0.4.0.md](pubblicazione-0.4.0.md). Restano: provare a mano l'installatore (pagine della lingua e «Aggiornamento di Cuelith», `installatori-prova/`) e l'app aggiornata sul computer del fondatore. Nota: la prima costruzione della release cadde su due prove fragili (non sul programma); sistemate e tag rifatto prima di pubblicare.
+
 ## Cose fatte ma non ancora provate dal vero
 
 - **Release 0.2.5 verificata dal vero** (2026-10-05): impronta dell'installatore uguale a `latest.yml`, pacchetto estratto con 7-Zip (non installato: sul computer del fondatore c'è la 0.2.0, non si tocca) con `resources/legal/` (LICENSE, NOTICE, PLUGIN-EXCEPTION.md), lingue 0.2.1 e 0.1.1 in GPL, 26 prove e2e verdi con `CUELITH_E2E_EXECUTABLE`. Non provato: aggiornamento da 0.2.0 a 0.2.5 su un computer vero.
@@ -97,7 +105,11 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 | Contributi esterni, protezioni, accordo di contribuzione, nome e logo | [decisione 0011](decisioni/0011-contributi-e-tutela.md) |
 | Licenza GPL, SDK Apache, eccezione per i plugin, marchio | [decisione 0012](decisioni/0012-licenza-gpl-e-eccezione-plugin.md) |
 | Marketplace a pagamento: architettura, fasi, commissione, cosa è vero e cosa no | [decisione 0013](decisioni/0013-marketplace-a-pagamento-senza-account.md) |
-| Stili del testo (globali sotto gli sfondi, dell'editor, controllo dello spazio): **fasi 1–3 fatte su `dev` (core 0.4.0, protocollo 1.16, non pubblicate)**; installatore di prova in `installatori-prova/`; fase 4 (formattazione dentro il testo) da fare | [decisione 0015](decisioni/0015-stili-del-testo.md) |
+| Stili del testo (globali sotto gli sfondi, dell'editor, controllo dello spazio, **righe intere, bordo e ombra**): fasi 1–3 fatte su `dev` (core 0.4.0, non pubblicate); fase 4 (formattazione dentro il testo) da fare | [decisione 0015](decisioni/0015-stili-del-testo.md) |
+| Colonna di destra di Presenta senza scorrimento verticale, anteprima grande, «Solo sfondo» (protocollo 1.17): **fatto su `dev`, non pubblicato** | [decisione 0016](decisioni/0016-interfaccia-colonna-destra.md) |
+| Trovare, aprire e configurare i plugin (ricerca Ctrl+K, preferiti, impostazioni uniformi con protocollo 1.18): **fatto su `dev`, non pubblicato** | [decisione 0017](decisioni/0017-trovare-e-configurare-i-plugin.md) |
+| Interfaccia di Brani rifatta (plugin 0.6.0, non nell'installatore): pannello compatto con barra fissa, editor con anteprima «cosa vede il pubblico», salto rapido, sezioni colorate: **fatto su `dev`** | [decisione 0019](decisioni/0019-interfaccia-brani.md) |
+| Finestra Plugin in tre schede (lingue a parte), vetrina con immagine e «Come si usa», avvio guidato, installatore con lingua e aggiornamento, protocollo 1.19 (`extras.json`): **fatto su `dev`, non pubblicato** | [decisione 0018](decisioni/0018-plugin-lingue-benvenuto-installatore.md) |
 | Marketplace senza commissione: cosa cambia, stati dei plugin, chi risponde, piano a costo zero | [decisione 0014](decisioni/0014-marketplace-senza-commissione.md) |
 | Plugin a pagamento, prima proposta (le parti Account, Server licenze, Negozio sono **superate dalla 0013**) | [decisione 0008](decisioni/0008-moduli-a-pagamento.md) |
 | Regole del sito (tono, schermate, animazioni, inglese tutto in inglese) | `cuelith-site/CLAUDE.md` e `README.md` |
@@ -135,6 +147,17 @@ Ogni decisione nuova va scritta in `decisioni/` con il numero successivo (la pro
 - **`LICENSE` deve restare il testo GPL puro**: GitHub lo riconosce così. L'eccezione per i plugin sta in `PLUGIN-EXCEPTION.md`, `NOTICE` e README, non dentro `LICENSE`.
 - In bash un comando con virgolette annidate e apostrofi può rompersi a metà: per le modifiche lunghe ai testi meglio uno script Node su file.
 - **La politica di sicurezza della console dell'hub ammette immagini solo da sé e da `data:`**: niente `blob:`. Per leggere un file scelto dall'utente si usa `createImageBitmap` o `data:`.
+- **Il Notaio finto firma con l'ora del sistema** (`license-helpers.ts`, `clock = () => Date.now()`): una prova che viaggia nel tempo deve fissare `w.notary.clock` allo stesso istante di partenza, altrimenti passa solo finché la data vera non supera `START`. Era la causa del test `license-flow` «un rimborso…» rotto dal 2026-10-07 (corretto).
+- **`createImageBitmap` non legge gli SVG**: le immagini di sfondo si caricano con `Image`; solo le GIF animate passano da `GifSource` (`pixi.js/gif`), con lo sprite che non distrugge i fotogrammi condivisi.
+- **Il carattere del titolo (Fraunces) cambia forma con la dimensione ottica**: nei riquadri piccoli l'anteprima fissa `opsz` alla dimensione dell'uscita; senza, il testo risulta più largo del calcolo e esce dal bordo.
+- **Python su Windows scrive i file con fine riga CRLF**: dopo uno script, `prettier --write`; negli script con apostrofi salvare su file, non heredoc.
+- **L'installatore a due lingue** (`electron-builder.yml`, `build/installer.nsh`): i warning di NSIS sono errori; `INSTALL_REGISTRY_KEY` esiste solo dentro le macro della pagina (`customWelcomePage`), e i testi della pagina di benvenuto si cambiano con `FindWindow`/`GetDlgItem` (1201 titolo, 1202 testo). File con accenti: UTF-8 **con BOM**. Per provare un installatore senza toccare il Cuelith vero: `electron-builder -c.appId=… -c.productName=… -c.directories.output=…`, `/S /D=<cartella>` e il disinstallatore `/S`.
+- **`createImageBitmap` non decodifica gli SVG**; le immagini di sfondo si caricano con `Image`.
+- **Le prove che clonano «il primo pulsante» di una colonna** (`tabs.spec`) vanno agganciate a un attributo (`data-dock-tools`), non al primo `button` del `nav`.
+- **Un `dialog` che si sta chiudendo ridà il fuoco all'elemento di prima**: in una prova, aspettare `toBeHidden()` prima di aprire un'altra finestra.
+- **Prova di resistenza** (`stress.spec.ts`): 16 plugin al 100% di CPU + 1 bloccato + 6 normali, tutti i core occupati: cambio scheda ~140 ms, ricerca ~45 ms, uscita sempre sotto ~20 ms tra fotogrammi. **Protezioni**: plugin Node a priorità più bassa; freno della memoria (ferma il plugin più pesante se la memoria libera è sotto max(400 MB, 4%)); avvisi quando il computer è al limite. Le prove di Windows: i `Win32_Process.WorkingSetSize` ingigantiscono, guardare `PrivatePageCount`. **Difetto corretto**: reinstallare la stessa versione di un plugin acceso dava EBUSY.
+- **Le prove che installano plugin a mano** devono dichiarare `engines.cuelith` come `>=0.1.0 <1.0.0` (con `^0.1.0` la 0.4.0 li scarta), e cercare la riga del plugin per testo contenuto (la riga comincia con le iniziali dell'icona: `^Nome` non trova nulla).
+- **Prova di carico dei plugin** (`load.spec.ts`, 12 plugin veri, Windows): ~27 MB privati l'uno, 0% di CPU da fermi, cambio scheda ~150 ms, ricerca ~100 ms; **installare in diretta può dare una pausa fino a 150 ms nell'uscita**. Il «peso di lavoro» di Windows ingigantisce (include pagine condivise): guardare la memoria **privata** (`PrivatePageCount`). Risultati in `e2e/screenshots/carico.json`.
 - Nelle prove, un comando concatenato in PowerShell non si ferma da solo se un passo fallisce: controllare l'esito dei test prima di pubblicare.
 
 - **Pannello vuoto per 10 secondi** alla prima apertura di un plugin appena installato: era la prima lettura dei file nuovi trattenuta dai controlli del sistema, non la poca memoria. Risolto con la lettura anticipata (`apps/engine/src/modules/warm.ts`).
