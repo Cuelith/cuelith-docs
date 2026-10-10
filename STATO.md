@@ -14,7 +14,7 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 | Protocollo / SDK | **1.19.0** / **0.8.0** (npm `@cuelith/protocol`, `sdk`, `panel`, `ui`, pubblicati il 2026-10-09; l'accesso a npm è con chiavi di sicurezza, la conferma si fa nel browser) | `cuelith-sdk` |
 | Lingua italiana | 0.2.8 | `plugin-locale-it` (inclusa nell'installatore) |
 | Lingua inglese | 0.1.8 | `plugin-locale-en` (inclusa nell'installatore) |
-| Plugin **Brani** (prima «Canti») | **0.7.0** (prima 0.6.0) (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
+| Plugin **Brani** (prima «Canti») | **0.7.1** (editor a schede; prima 0.7.0) (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.2.0 | `plugin-template` |
 | Marketplace | Brani 0.6.0 (e le precedenti); `extras.json` con immagine e guida | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
 | Sito | **0.8.0** (2026-10-10; prima 0.7.0; prima 0.6.0, 2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
