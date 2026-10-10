@@ -10,14 +10,14 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 
 | Cosa | Versione | Dove |
 | --- | --- | --- |
-| Programma (nucleo) | **0.4.0** (pubblica il 2026-10-09: interfaccia rifatta, Ctrl+K, impostazioni dei plugin, avvio guidato, stili del testo con bordo e ombra, installatore con scelta della lingua e riconoscimento dell'aggiornamento, protezioni con tanti plugin; vedi `cuelith-core/versioni/0.4.0.md`). Prima: 0.3.3 | `cuelith-core`, GitHub Releases |
+| Programma (nucleo) | **0.5.0** (2026-10-10, editor degli stili); prima **0.4.0** (2026-10-09: interfaccia rifatta, Ctrl+K, impostazioni dei plugin, avvio guidato, stili del testo con bordo e ombra, installatore con scelta della lingua e riconoscimento dell'aggiornamento, protezioni con tanti plugin; vedi `cuelith-core/versioni/0.4.0.md`). Prima: 0.3.3 | `cuelith-core`, GitHub Releases |
 | Protocollo / SDK | **1.19.0** / **0.8.0** (npm `@cuelith/protocol`, `sdk`, `panel`, `ui`, pubblicati il 2026-10-09; l'accesso a npm è con chiavi di sicurezza, la conferma si fa nel browser) | `cuelith-sdk` |
-| Lingua italiana | 0.2.6 | `plugin-locale-it` (inclusa nell'installatore) |
-| Lingua inglese | 0.1.6 | `plugin-locale-en` (inclusa nell'installatore) |
+| Lingua italiana | 0.2.7 | `plugin-locale-it` (inclusa nell'installatore) |
+| Lingua inglese | 0.1.7 | `plugin-locale-en` (inclusa nell'installatore) |
 | Plugin **Brani** (prima «Canti») | **0.6.0** (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.2.0 | `plugin-template` |
 | Marketplace | Brani 0.6.0 (e le precedenti); `extras.json` con immagine e guida | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
-| Sito | **0.6.0** (2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
+| Sito | **0.7.0** (2026-10-10; prima 0.6.0, 2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
 
@@ -69,6 +69,8 @@ Il fondatore vuole provare tutto in locale prima di pubblicare (nucleo 0.4.0, pr
 **Ancora da fare, nell'ordine deciso con il fondatore** (2026-10-07): (1) ~~modello di interfaccia dei plugin, colonna sinistra (decisione 0017)~~ **fatto su `dev`**; (2) ~~marketplace migliorato e scheda per le lingue; Brani fuori dall'installatore con avvio guidato; immagine e guida degli autori; installatore con lingua e aggiornamento (decisione 0018)~~ **fatto su `dev`** (la procedura guidata dell'installatore va guardata a mano una volta); (3) ~~interfaccia di Brani rifatta~~ **fatto su `dev`** (plugin 0.6.0, decisione 0019: va pubblicato il plugin e aggiornato `cuelith-registry/plugins/cuelith.songs.json` con impronta e dimensione del pacchetto **pubblicato**); (4) ~~colonna centrale~~ **fatto su `dev`** (miniature S/M/L, stato a parole, conteggio: decisione 0019). **Il plugin Accordi, annesso a Brani, si farà molto più avanti** (fondatore, 2026-10-08) e non è ancora progettato: non si anticipa nulla (niente anteprima con gli accordi, trasposizione o schede per i musicisti).
 
 **Pubblicazione 0.4.0 eseguita il 2026-10-09** nell'ordine di [pubblicazione-0.4.0.md](pubblicazione-0.4.0.md). Restano: provare a mano l'installatore (pagine della lingua e «Aggiornamento di Cuelith», `installatori-prova/`) e l'app aggiornata sul computer del fondatore. Nota: la prima costruzione della release cadde su due prove fragili (non sul programma); sistemate e tag rifatto prima di pubblicare.
+
+**Pubblica il 2026-10-10: Cuelith 0.5.0** (editor degli stili: 27 caratteri veri, spessore e corsivo solo se esistono, spaziatura, posizione, esempio dalla slide in anteprima o testo di prova nella lingua in uso): decisione [0020](decisioni/0020-editor-stili-caratteri.md). Lingue 0.2.7 / 0.1.7, sito 0.7.0 (online), protocollo 1.20.0 su GitHub (`protocol-v1.20.0`). **Da fare dal fondatore: pubblicare `@cuelith/protocol` 1.20.0 su npm** (`pnpm -r publish --access public --no-git-checks` in `cuelith-sdk`, conferma con la chiave di sicurezza: serve solo a chi sviluppa plugin). **Idea futura**: ingrandire o cambiare lo stile di una sola parola dentro un testo; le slide oggi sono testo semplice, quindi va progettato a parte (decisione 0020, «Da sapere»).
 
 ## Cose fatte ma non ancora provate dal vero
 
