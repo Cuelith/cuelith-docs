@@ -10,14 +10,14 @@ Cuelith 0.2.0 è pubblico (Windows e Linux, italiano e inglese), il sito è onli
 
 | Cosa | Versione | Dove |
 | --- | --- | --- |
-| Programma (nucleo) | **0.5.0** (2026-10-10, editor degli stili); prima **0.4.0** (2026-10-09: interfaccia rifatta, Ctrl+K, impostazioni dei plugin, avvio guidato, stili del testo con bordo e ombra, installatore con scelta della lingua e riconoscimento dell'aggiornamento, protezioni con tanti plugin; vedi `cuelith-core/versioni/0.4.0.md`). Prima: 0.3.3 | `cuelith-core`, GitHub Releases |
+| Programma (nucleo) | **0.6.0** (2026-10-10, parole formattate); prima **0.5.0** (editor degli stili) e **0.4.0** (2026-10-09: interfaccia rifatta, Ctrl+K, impostazioni dei plugin, avvio guidato, stili del testo con bordo e ombra, installatore con scelta della lingua e riconoscimento dell'aggiornamento, protezioni con tanti plugin; vedi `cuelith-core/versioni/0.4.0.md`). Prima: 0.3.3 | `cuelith-core`, GitHub Releases |
 | Protocollo / SDK | **1.19.0** / **0.8.0** (npm `@cuelith/protocol`, `sdk`, `panel`, `ui`, pubblicati il 2026-10-09; l'accesso a npm è con chiavi di sicurezza, la conferma si fa nel browser) | `cuelith-sdk` |
-| Lingua italiana | 0.2.7 | `plugin-locale-it` (inclusa nell'installatore) |
-| Lingua inglese | 0.1.7 | `plugin-locale-en` (inclusa nell'installatore) |
-| Plugin **Brani** (prima «Canti») | **0.6.0** (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
+| Lingua italiana | 0.2.8 | `plugin-locale-it` (inclusa nell'installatore) |
+| Lingua inglese | 0.1.8 | `plugin-locale-en` (inclusa nell'installatore) |
+| Plugin **Brani** (prima «Canti») | **0.7.0** (prima 0.6.0) (GPL; non è più nell'installatore, si installa dal marketplace) | `plugin-songs`, nel marketplace |
 | Plugin d'esempio «Ciao» | 0.2.0 | `plugin-template` |
 | Marketplace | Brani 0.6.0 (e le precedenti); `extras.json` con immagine e guida | `cuelith-registry` → `https://cuelith.github.io/cuelith-registry/index.json` |
-| Sito | **0.7.0** (2026-10-10; prima 0.6.0, 2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
+| Sito | **0.8.0** (2026-10-10; prima 0.7.0; prima 0.6.0, 2026-10-09; costruito senza `CONTACT_EMAIL`, come prima: serve ancora un indirizzo per segnalazioni, vedi decisione 0014) | `cuelith-site` → Cloudflare Pages, progetto `cuelith`, <https://cuelith.lzrhive.it> |
 | Regole per chi contribuisce | — | repo `Cuelith/.github` (cartella locale `cuelith-community`) |
 | Documentazione | v0.2.0 | questo repo |
 
@@ -71,6 +71,8 @@ Il fondatore vuole provare tutto in locale prima di pubblicare (nucleo 0.4.0, pr
 **Pubblicazione 0.4.0 eseguita il 2026-10-09** nell'ordine di [pubblicazione-0.4.0.md](pubblicazione-0.4.0.md). Restano: provare a mano l'installatore (pagine della lingua e «Aggiornamento di Cuelith», `installatori-prova/`) e l'app aggiornata sul computer del fondatore. Nota: la prima costruzione della release cadde su due prove fragili (non sul programma); sistemate e tag rifatto prima di pubblicare.
 
 **Pubblica il 2026-10-10: Cuelith 0.5.0** (editor degli stili: 27 caratteri veri, spessore e corsivo solo se esistono, spaziatura, posizione, esempio dalla slide in anteprima o testo di prova nella lingua in uso): decisione [0020](decisioni/0020-editor-stili-caratteri.md). Lingue 0.2.7 / 0.1.7, sito 0.7.0 (online), protocollo 1.20.0 su GitHub (`protocol-v1.20.0`). **Da fare dal fondatore: pubblicare `@cuelith/protocol` 1.20.0 su npm** (`pnpm -r publish --access public --no-git-checks` in `cuelith-sdk`, conferma con la chiave di sicurezza: serve solo a chi sviluppa plugin). **Idea futura**: ingrandire o cambiare lo stile di una sola parola dentro un testo; le slide oggi sono testo semplice, quindi va progettato a parte (decisione 0020, «Da sapere»).
+
+**Pubblicato il 2026-10-10: Cuelith 0.6.0 con le parole formattate** (dimensione, grassetto, corsivo, colore su singole parole; decisioni [0021](decisioni/0021-parole-formattate.md) e [0022](decisioni/0022-formattazione-plugin-annesso.md); protocollo 1.21-1.23). Plugin annesso **Formattazione 0.2.0** (repo `Cuelith/plugin-richtext`, nel marketplace; la sua barra sta in cima alla finestra dell'editor) e **Brani 0.7.0** (parole formattate per sezione). Lingue 0.2.8/0.1.8, sito 0.8.0 online. **Da fare dal fondatore: pubblicare su npm `@cuelith/protocol` 1.23.0 e `@cuelith/panel` 0.9.0** (`pnpm -r publish --access public --no-git-checks` in `cuelith-sdk`, conferma con la chiave di sicurezza; serve solo a chi sviluppa plugin). **Manca**: scrivere le parole formattate anche in OpenLyrics (oggi ChordPro e OpenLyrics escono come testo semplice).
 
 ## Cose fatte ma non ancora provate dal vero
 
